@@ -1,0 +1,745 @@
+
+    <div class="pbar" id="pb"></div>
+    <div class="aur" aria-hidden="true">
+      <i></i><i></i><i></i><u class="sd a"></u><u class="sd b"></u
+      ><u class="sd c"></u><u class="sd d"></u>
+    </div>
+    <div class="wm" id="wm" aria-hidden="true"></div>
+    <nav>
+      <div class="bar glass">
+        <a href="#home" aria-label="GEOSPATIALS home"
+          ><img data-logo alt="GEOSPATIALS"
+        /></a>
+        <div class="links" id="nl">
+          <a href="#about">About</a><a href="#info">Information</a
+          ><a href="#tech">Technologies</a><a href="#who">Who can join</a
+          ><a href="#package">Package</a><a href="#contact">Contact</a>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center">
+          <a class="btn sm" href="#register" data-open-register>Register ↗</a
+          ><button class="mt" id="mt" aria-expanded="false" aria-label="Menu">
+            Menu ☰
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <section class="hero" id="home">
+      <div class="earth-scene" aria-hidden="true">
+        <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMaxYMid slice">
+        <defs>
+          <radialGradient id="earth-ocean" cx="34%" cy="25%" r="78%">
+            <stop offset="0" stop-color="#68c7d8" />
+            <stop offset=".38" stop-color="#176888" />
+            <stop offset=".76" stop-color="#073959" />
+            <stop offset="1" stop-color="#031a32" />
+          </radialGradient>
+          <linearGradient id="earth-land" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#c3d9a0" />
+            <stop offset=".45" stop-color="#82b78d" />
+            <stop offset="1" stop-color="#397f86" />
+          </linearGradient>
+          <radialGradient id="earth-shade" cx="30%" cy="25%" r="78%">
+            <stop offset=".48" stop-color="#02172b" stop-opacity="0" />
+            <stop offset="1" stop-color="#02172b" stop-opacity=".72" />
+          </radialGradient>
+          <linearGradient id="solar-panel" x1="0" x2="1" y1="0" y2="1">
+            <stop stop-color="#c7f2ff" />
+            <stop offset="1" stop-color="#3489b9" />
+          </linearGradient>
+          <filter id="earth-glow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="24" />
+          </filter>
+          <clipPath id="earth-clip">
+            <circle cx="1190" cy="500" r="438" />
+          </clipPath>
+        </defs>
+        <ellipse cx="1190" cy="500" rx="470" ry="470" fill="#43c5dd" opacity=".2" filter="url(#earth-glow)" />
+        <ellipse class="orbit" cx="1190" cy="500" rx="570" ry="230" transform="rotate(-23 1190 500)" />
+        <ellipse class="orbit" cx="1190" cy="500" rx="555" ry="285" transform="rotate(29 1190 500)" opacity=".42" />
+        <circle cx="1190" cy="500" r="440" fill="none" stroke="#a9f3ff" stroke-width="3" opacity=".7" />
+        <circle cx="1190" cy="500" r="438" fill="url(#earth-ocean)" />
+        <g clip-path="url(#earth-clip)" fill="none" stroke="#a8eafa" stroke-opacity=".23" stroke-width="2">
+          <ellipse cx="1190" cy="500" rx="300" ry="438" />
+          <ellipse cx="1190" cy="500" rx="145" ry="438" />
+          <ellipse cx="1190" cy="500" rx="438" ry="170" />
+          <ellipse cx="1190" cy="500" rx="438" ry="315" />
+        </g>
+        <g clip-path="url(#earth-clip)" fill="url(#earth-land)" stroke="#d6e7ae" stroke-opacity=".35" stroke-width="2">
+          <path d="M821 246 858 216 900 223 921 204 963 219 982 244 1013 249 1024 277 1007 299 1021 321 1000 340 1007 368 980 384 967 412 938 424 925 455 900 461 880 438 862 432 848 404 826 391 819 363 796 342 801 316 782 298 795 272Z" />
+          <path d="M1005 435 1040 421 1071 435 1096 463 1110 500 1097 531 1090 566 1067 600 1055 640 1032 669 1015 641 1019 606 1000 574 1002 538 983 507 988 476 972 456Z" />
+          <path d="M1129 254 1160 231 1201 239 1227 219 1264 233 1293 222 1321 241 1359 239 1380 262 1416 268 1434 294 1410 318 1376 315 1356 337 1321 327 1301 351 1273 344 1254 367 1226 357 1208 378 1178 369 1163 343 1134 335 1121 305 1095 286 1101 266Z" />
+          <path d="M1162 383 1195 367 1231 378 1254 402 1279 421 1285 454 1270 479 1264 516 1245 548 1228 581 1206 607 1184 592 1176 557 1158 531 1152 498 1134 468 1141 435Z" />
+          <path d="M1340 545 1373 532 1412 542 1434 564 1422 590 1393 604 1366 589 1342 573Z" />
+          <path d="M1097 219 1114 207 1133 214 1127 230 1107 235Z" />
+        </g>
+        <circle cx="1190" cy="500" r="438" fill="url(#earth-shade)" />
+        <path d="M819 666c190 78 425 73 626-34" fill="none" stroke="#91e7f7" stroke-width="4" opacity=".22" />
+        <g class="satellite" transform="translate(1370 265) rotate(-18)">
+          <path d="M-104-19h72v38h-72zM32-19h72v38H32z" fill="url(#solar-panel)" stroke="#e2f7ff" stroke-width="2" />
+          <path d="M-80-19v38m24-38v38m24-38v38M56-19v38m24-38v38" stroke="#1f648f" stroke-width="2" />
+          <path d="M-31 0h62" stroke="#dff7ff" stroke-width="4" />
+          <rect x="-26" y="-23" width="52" height="46" rx="8" fill="#f5c96d" stroke="#fff0be" stroke-width="2" />
+          <path d="M0-23v-25m0 71v25m-8-46h16m-8-8v16" stroke="#fff0be" stroke-width="3" />
+          <circle cy="-48" r="5" fill="#fff5cb" />
+          <path d="M0 48v19m-11 0h22" stroke="#dff7ff" stroke-width="3" />
+        </g>
+        <circle cx="708" cy="412" r="4" fill="#f5d27b" />
+        <circle cx="1510" cy="290" r="3" fill="#fff" opacity=".8" />
+        <circle cx="1460" cy="726" r="4" fill="#fff" opacity=".65" />
+        <circle cx="860" cy="750" r="3" fill="#a9f3ff" opacity=".8" />
+      </svg> -->
+      </div>
+      <div class="wrap">
+        <div>
+          <img
+            data-logo
+            class="hlogo"
+            alt="GEOSPATIALS: Your Spatial Universe"
+          />
+          <div class="eb"><b></b>Early registration open</div>
+
+          <h1>Geospatial <span>learning and industry</span> ecosystem</h1>
+          <p class="lead">
+            Learn from experts in GIS, Remote Sensing, Drones, LiDAR and GeoAI.
+            Build a portfolio. Meet the companies that hire.
+          </p>
+          <div class="btns">
+            <a class="btn" href="#register" data-open-register
+              >Register your interest ↗</a
+            ><a class="btn o" href="#about">Explore the brochure ↓</a>
+          </div>
+          <div class="bd">
+            <span><b>✓</b> Verified certificates</span
+            ><span><b>✓</b> Online · Offline · Hybrid</span
+            ><span><b>✓</b> Learners ↔ Experts ↔ Industry</span>
+          </div>
+        </div>
+        <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#bff8ff" />
+              <stop offset="1" stop-color="#4fb6d6" />
+            </linearGradient>
+            <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#a393ff" />
+              <stop offset="1" stop-color="#3a2f9e" />
+            </linearGradient>
+            <linearGradient id="g3" x1="1" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#ff9bdc" />
+              <stop offset="1" stop-color="#7a5bd8" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </section>
+    <section class="ts" aria-label="Technologies you will master">
+      <div class="wrap">
+        <div class="eb" style="justify-content: center">
+          Technologies you will master
+        </div>
+      </div>
+      <div class="mq">
+        <div class="mt2" id="r1"></div>
+      </div>
+      <div class="mq">
+        <div class="mt2 rev" id="r2"></div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="wrap">
+        <div class="abbg rv">
+          <div class="hd txt">
+            <div class="eb">About the platform</div>
+            <h2>
+              India's dedicated learning and career platform for geospatial
+              technology
+            </h2>
+            <p>
+              <b><strong class="gs">GEOSPATIALS</strong></b> is a purpose-built
+              digital platform that brings learners, expert trainers and
+              industry organisations together on one trusted network. It covers
+              the full discipline: GIS, remote sensing, photogrammetry, LiDAR,
+              drone (UAV) mapping, surveying and GNSS, GeoAI and spatial data
+              science, web GIS and digital twins.
+            </p>
+            <p>
+              Location intelligence now shapes decisions in urban planning,
+              agriculture, utilities, water management, land administration,
+              infrastructure, forestry, environment and disaster response. Yet
+              quality training, credible certification and genuine industry
+              contact are often scattered across many places.
+              <strong class="gs">GEOSPATIALS</strong> brings structured
+              learning, hands-on practice, verified credentials and real
+              opportunities into a single journey.
+            </p>
+          </div>
+        </div>
+
+        <div class="two rv">
+          <div class="glass">
+            <div class="lab">Our vision</div>
+            <h3>A trusted home for geospatial growth</h3>
+            <p style="color: var(--mute); margin: 0">
+              To be the most trusted place where geospatial skills are built
+              through practice and recognised by industry.
+            </p>
+          </div>
+          <div class="glass">
+            <div class="lab">Our mission</div>
+            <h3>Accessible, verifiable, career-connected</h3>
+            <p style="color: var(--mute); margin: 0">
+              To make high-quality, practical geospatial education available to
+              everyone, prove it with verifiable credentials, and connect it
+              directly to jobs, internships and projects.
+            </p>
+          </div>
+        </div>
+
+        <div class="sb rv">
+          <div class="eb">What makes us different</div>
+          <h3>Six commitments to every member</h3>
+        </div>
+        <div class="grid" id="pil"></div>
+
+        <div class="sb rv">
+          <div class="eb">Who it is for</div>
+          <h3>One platform, built around your goal</h3>
+        </div>
+        <div class="roles3 aud">
+          <div class="glass rv">
+            <div class="lab">Students and graduates</div>
+            <h3>Start your geospatial career</h3>
+            <ul class="ck">
+              <li>Structured pathways from beginner to advanced</li>
+              <li>Practice with industry tools and real datasets</li>
+              <li>Certificates and a portfolio that stand out in placements</li>
+              <li>Find internships and entry-level opportunities</li>
+            </ul>
+            <button class="btn sm" data-open-register data-role="Learner">
+              Register as learner ↗
+            </button>
+          </div>
+          <!-- <div class="glass rv">
+          <div class="lab">Working professionals</div>
+          <h3>Upskill without pausing work</h3>
+          <ul class="ck">
+            <li>Short workshops and webinars that fit a busy schedule</li>
+            <li>Advanced training in drones, LiDAR, GeoAI and more</li>
+            <li>Credentials that support promotion or a change of field</li>
+            <li>Learn alongside peers and industry experts</li>
+          </ul><button class="btn sm" data-open-register data-role="Learner">Register as learner ↗</button>
+        </div> -->
+          <div class="glass rv">
+            <div class="lab">Trainers and industry experts</div>
+            <h3>Teach, publish and build your reputation</h3>
+            <ul class="ck">
+              <li>Get verified and build a public expert profile</li>
+              <li>Publish courses, training and webinars</li>
+              <li>Manage learners and track programme analytics</li>
+              <li>Collaborate with industry on real projects</li>
+            </ul>
+            <button
+              class="btn sm"
+              data-open-register
+              data-role="Trainer / Expert"
+            >
+              Register as expert ↗
+            </button>
+          </div>
+          <div class="glass rv">
+            <div class="lab">Industry partners and organisations</div>
+            <h3>Find talent that is ready to work</h3>
+            <ul class="ck">
+              <li>Verified organisation profile and listings</li>
+              <li>Post jobs, internships, live projects and challenges</li>
+              <li>Review and shortlist certified candidates</li>
+              <li>Co-create training with experts for your team</li>
+            </ul>
+            <button
+              class="btn sm"
+              data-open-register
+              data-role="Industry Partner"
+            >
+              Register as partner ↗
+            </button>
+          </div>
+        </div>
+
+        <div class="sb rv">
+          <div class="eb">Sectors we serve</div>
+          <h3>Skills that apply across industries</h3>
+        </div>
+        <div class="chips rv" style="margin-top: 0">
+          <span>Urban planning</span><span>Agriculture</span
+          ><span>Power and utilities</span><span>Water supply and drainage</span
+          ><span>Land and property records</span><span>Infrastructure</span
+          ><span>Forestry and wildlife</span><span>Environment</span
+          ><span>Disaster management</span><span>Smart cities</span>
+        </div>
+
+        <div class="sb rv">
+          <div class="eb">Your journey</div>
+          <h3>From first lesson to career opportunity</h3>
+        </div>
+        <div
+          class="tl rv"
+          data-steps="Learn|Practice|Build projects|Earn credentials|Build portfolio|Connect with industry|Get opportunities"
+        ></div>
+
+        <div class="sb rv">
+          <div class="eb">Built on trust</div>
+          <h3>Quality and transparency by design</h3>
+        </div>
+        <div class="pk" id="trust"></div>
+
+        <div class="glass abt rv">
+          <div>
+            <h3>
+              Be among the first members of
+              <strong class="gs">GEOSPATIALS</strong>
+            </h3>
+            <p>
+              Register your interest today. Early members hear about launch and
+              early access first.
+            </p>
+          </div>
+          <div class="btns">
+            <a class="btn" href="#register" data-open-register
+              >Register your interest ↗</a
+            ><button class="btn o" onclick="window.print()">
+              Save brochure as PDF
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="info">
+      <div class="wrap">
+        <div class="split">
+          <div class="hd rv">
+            <div class="eb">Platform information</div>
+            <h2>Everything you need to know before you register</h2>
+          </div>
+          <div
+            class="art glass rv"
+            data-art="sat"
+            role="img"
+            aria-label="Satellite scanning Earth"
+          ></div>
+        </div>
+        <div class="info">
+          <div class="glass rv">
+            <div class="lab">Registration</div>
+            <h3>Interest registration</h3>
+            <div class="big">Open now</div>
+            <p style="color: var(--mute); margin: 10px 0 0; font-size: 15px">
+              Share your details and we will contact you with launch updates and
+              early access.
+            </p>
+          </div>
+          <div class="glass rv">
+            <div class="lab">Schedule</div>
+            <h3>Key stages</h3>
+            <div class="kv">
+              <div><b>Early interest registration</b><span>Open now</span></div>
+              <div>
+                <b>Candidate communication</b><span>Before launch</span>
+              </div>
+              <div>
+                <b>Platform launch</b><span>Dates to be announced</span>
+              </div>
+            </div>
+          </div>
+          <div class="glass rv">
+            <div class="lab">Application</div>
+            <h3>What we ask for</h3>
+            <ul class="ck">
+              <li>Name and email</li>
+              <li>Your role: learner, expert or partner</li>
+              <li>Location and organisation</li>
+              <li>Technologies you care about</li>
+              <li>Consent to be contacted</li>
+            </ul>
+          </div>
+          <div class="glass rv">
+            <div class="lab">Experience</div>
+            <h3>Platform highlights</h3>
+            <ol class="hl">
+              <li>Expert-led programs</li>
+              <li>Hands-on projects</li>
+              <li>Verified certificates</li>
+              <li>Portfolio building</li>
+              <li>Datasets and resources</li>
+              <li>Industry opportunities</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tech">
+      <div class="wrap">
+        <div class="split">
+          <div class="hd rv">
+            <div class="eb">Technologies</div>
+            <h2>Learn the technologies shaping geospatial work</h2>
+            <p>
+              Programs span the full geospatial toolkit, from field survey to
+              GeoAI.
+            </p>
+          </div>
+          <div
+            class="art glass rv"
+            data-art="drone"
+            role="img"
+            aria-label="Survey drone scanning terrain"
+          ></div>
+        </div>
+        <div class="grid" id="techg"></div>
+      </div>
+    </section>
+
+    <section id="who">
+      <div class="wrap">
+        <div class="split">
+          <div class="hd rv">
+            <div class="eb">Who can participate</div>
+            <h2>Built for everyone in the geospatial ecosystem</h2>
+            <p>Whether you are starting out, teaching, or hiring.</p>
+          </div>
+          <div
+            class="art glass rv"
+            data-art="net"
+            role="img"
+            aria-label="Government, industry and academia linked"
+          ></div>
+        </div>
+        <div class="chips rv" id="wch" style="margin-top: 0"></div>
+        <div class="roles3">
+          <div class="glass rv">
+            <div class="lab">Role 01</div>
+            <h3>Learner</h3>
+            <ul class="ck">
+              <li>Discover and enroll in programs</li>
+              <li>Learn, practise and take assessments</li>
+              <li>Earn certificates and build a portfolio</li>
+            </ul>
+          </div>
+          <div class="glass rv">
+            <div class="lab">Role 02</div>
+            <h3>Trainer / Industry expert</h3>
+            <ul class="ck">
+              <li>Get verified and build your profile</li>
+              <li>Create and publish programs</li>
+              <li>Manage learners and view analytics</li>
+            </ul>
+          </div>
+          <div class="glass rv">
+            <div class="lab">Role 03</div>
+            <h3>Industry partner</h3>
+            <ul class="ck">
+              <li>Register and verify your organization</li>
+              <li>Post jobs, internships, projects, challenges</li>
+              <li>Review and shortlist candidates</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="package">
+      <div class="wrap">
+        <div class="split">
+          <div class="hd rv">
+            <div class="eb">Platform package</div>
+            <h2>What registered members will get at launch</h2>
+            <p>Early members are first in line for access.</p>
+          </div>
+          <div
+            class="art glass rv"
+            data-art="layers"
+            role="img"
+            aria-label="Stacked map layers"
+          ></div>
+        </div>
+        <div class="pk" id="pkg"></div>
+      </div>
+    </section>
+
+    <section id="register">
+      <div class="wrap">
+        <div class="hd rv">
+          <div class="eb">Limited early access</div>
+          <h2>Choose your path into GEOSPATIALS</h2>
+          <p>
+            Start with the role that best describes you. The registration form
+            adapts to your goals and organisation.
+          </p>
+        </div>
+        <div class="register-launch">
+          <button type="button" data-open-register data-role="learner">
+            <span class="lab">01 · LEARN</span><b>Learner</b
+            ><small
+              >For students, graduates and professionals building geospatial
+              skills.</small
+            ><span class="lab" style="display: block; margin-top: 18px"
+              >Register as learner ↗</span
+            ></button
+          ><button type="button" data-open-register data-role="expert">
+            <span class="lab">02 · SHARE</span><b>Expert</b
+            ><small
+              >For trainers and practitioners who want to teach, mentor and
+              publish.</small
+            ><span class="lab" style="display: block; margin-top: 18px"
+              >Register as expert ↗</span
+            ></button
+          ><button type="button" data-open-register data-role="partner">
+            <span class="lab">03 · PARTNER</span><b>Organisation</b
+            ><small
+              >For industry, government and academic organisations ready to
+              collaborate.</small
+            ><span class="lab" style="display: block; margin-top: 18px"
+              >Register as partner ↗</span
+            >
+          </button>
+        </div>
+        <div class="reg">
+          <div class="glass rv">
+            <form id="reg-form">
+              <div class="fg">
+                <div class="full">
+                  <label class="l">I am a</label>
+                  <div class="roles" role="radiogroup">
+                    <label
+                      ><input
+                        type="radio"
+                        name="role"
+                        value="Learner"
+                        checked
+                      /><span>Learner</span></label
+                    ><label
+                      ><input
+                        type="radio"
+                        name="role"
+                        value="Trainer / Expert"
+                      /><span>Expert</span></label
+                    ><label
+                      ><input
+                        type="radio"
+                        name="role"
+                        value="Industry Partner"
+                      /><span>Partner</span></label
+                    >
+                  </div>
+                </div>
+                <div>
+                  <label class="l" for="n">Full name</label
+                  ><input
+                    class="in"
+                    id="n"
+                    name="name"
+                    required
+                    autocomplete="name"
+                  />
+                </div>
+                <div>
+                  <label class="l" for="e">Email</label
+                  ><input
+                    class="in"
+                    id="e"
+                    name="email"
+                    type="email"
+                    required
+                    autocomplete="email"
+                  />
+                </div>
+                <div>
+                  <label class="l" for="p">Phone</label
+                  ><input
+                    class="in"
+                    id="p"
+                    name="phone"
+                    type="tel"
+                    autocomplete="tel"
+                  />
+                </div>
+                <div>
+                  <label class="l" for="c">State and city</label
+                  ><input
+                    class="in"
+                    id="c"
+                    name="city"
+                    placeholder="e.g. Haryana, Faridabad"
+                  />
+                </div>
+                <div class="full">
+                  <label class="l" for="o">Institution or organisation</label
+                  ><input class="in" id="o" name="org" />
+                </div>
+                <div>
+                  <label class="l" for="lv">Level</label
+                  ><select id="lv" name="level">
+                    <option>Beginner</option>
+                    <option>Intermediate</option>
+                    <option>Advanced</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="l" for="md">Preferred mode</label
+                  ><select id="md" name="mode">
+                    <option>Online</option>
+                    <option>Offline</option>
+                    <option>Hybrid</option>
+                  </select>
+                </div>
+                <div class="full">
+                  <label class="l">Interested in</label>
+                  <div class="cbs" id="ints"></div>
+                </div>
+                <label class="cons full"
+                  ><input type="checkbox" name="consent" required /> I agree to
+                  be contacted about
+                  <strong class="gs">GEOSPATIALS</strong> launch and early
+                  access.</label
+                >
+                <div class="full">
+                  <button class="btn" type="submit" style="width: 100%">
+                    Register your interest ↗
+                  </button>
+                  <p
+                    class="msg"
+                    id="msg"
+                    role="status"
+                    style="margin-top: 10px"
+                  ></p>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="glass rv" style="padding: 28px">
+            <div class="lab">What happens next</div>
+            <ol class="nx" style="margin-top: 18px">
+              <li>
+                <div><b>You register</b><span>Share a few details.</span></div>
+              </li>
+              <li>
+                <div>
+                  <b>We review</b
+                  ><span>Your role and interests help us plan programs.</span>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <b>You hear from us</b
+                  ><span>Launch news and early access before the public.</span>
+                </div>
+              </li>
+            </ol>
+            <div class="btns" style="margin-top: 24px">
+              <button class="btn o sm" onclick="window.print()">
+                Save brochure as PDF
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="wrap">
+        <div class="hd rv">
+          <div class="eb">Contact</div>
+          <h2>Get in touch</h2>
+          <p>
+            Questions about registration, programs, partnerships or becoming an
+            expert.
+          </p>
+        </div>
+        <div class="ct">
+          <div class="glass rv">
+            <div class="lab">Get in touch</div>
+            <h3><strong class="gs">GEOSPATIALS</strong> team</h3>
+            <p>Questions about registration, programs or partnerships.</p>
+            <a class="btn sm" id="mail" href="#">Send email</a>
+          </div>
+          <div class="glass rv">
+            <div class="lab">Experts and partners</div>
+            <h3>Work with us</h3>
+            <p>Teach a program or post opportunities after verification.</p>
+            <a class="btn o sm" href="#register" data-open-register
+              >Register as expert or partner</a
+            >
+          </div>
+          <div class="glass rv">
+            <div class="lab">Follow</div>
+            <h3>Stay updated</h3>
+            <p>Launch news and announcements on social media.</p>
+            <a
+              class="btn o sm"
+              id="li"
+              href="https://www.linkedin.com/"
+              target="_blank"
+              rel="noopener"
+              >LinkedIn</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="reg-backdrop" id="reg-modal" aria-hidden="true">
+      <section
+        class="reg-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="reg-title"
+        tabindex="-1"
+      >
+        <header class="reg-head">
+          <div>
+            <div
+              style="
+                font: 700 10px var(--f);
+                letter-spacing: 0.18em;
+                text-transform: uppercase;
+                color: #d8aa3a;
+                margin-bottom: 7px;
+              "
+            >
+              GEOSPATIALS · EARLY ACCESS
+            </div>
+            <h2 id="reg-title">Register your interest</h2>
+            <p class="reg-sub" id="reg-sub">
+              Tell us how you would like to use GEOSPATIALS.
+            </p>
+          </div>
+          <button
+            class="reg-icon"
+            id="reg-close"
+            aria-label="Close registration"
+          >
+            ✕
+          </button>
+        </header>
+        <div class="reg-body" id="reg-body"></div>
+        <footer class="reg-foot" id="reg-foot" hidden></footer>
+      </section>
+    </div>
+
+    <footer>
+      <div class="wrap">
+        <img data-logo alt="GEOSPATIALS" /><span
+          >Connecting Learners · Experts · Industry</span
+        ><span
+          >© <span id="yr"></span> <strong class="gs">GEOSPATIALS</strong></span
+        >
+      </div>
+    </footer>
+    <a class="btn fab on" href="#register" data-open-register>Register ↗</a>
+
+    
+    
+  
