@@ -2942,6 +2942,22 @@
       object-fit: cover
     }
 
+    #founder .fd-badge {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 8px 18px;
+      border-radius: 999px;
+      background: linear-gradient(120deg, #7ff0ff, #ffd58a);
+      color: #0a2540;
+      font: 800 12px var(--h);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, .3)
+    }
+
     #founder .fd-n {
       margin: 12px 0 6px;
       color: #fff;
@@ -3480,6 +3496,7 @@
     .hero {
       isolation: isolate;
       background-color: #07182a !important;
+      background-image: none !important;
     }
 
     .hero::before {
