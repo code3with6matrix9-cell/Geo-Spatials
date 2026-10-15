@@ -1,0 +1,14 @@
+package com.remosens.geospatials.enums;
+
+public enum Sector {
+    URBAN_PLANNING,
+    AGRICULTURE,
+    POWER_UTILITIES,
+    WATER_DRAINAGE,
+    LAND_RECORDS,
+    INFRASTRUCTURE,
+    FORESTRY_WILDLIFE,
+    ENVIRONMENT,
+    DISASTER_MANAGEMENT,
+    SMART_CITIES
+}
