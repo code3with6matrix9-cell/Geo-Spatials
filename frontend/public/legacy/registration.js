@@ -664,11 +664,11 @@
   const contactImgs = [
     "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=800&q=80",
     "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
+    "/images/linkedIn_image.png",
   ];
   document.querySelectorAll("#contact .ct .glass").forEach((card, i) => {
     let photo = document.createElement("div");
-    photo.className = "contact-visual";
+    photo.className = "contact-visual" + (i === 2 ? " linkedin-visual" : "");
     photo.innerHTML =
       '<img loading="lazy" src="' + contactImgs[i] + '" alt="">';
     card.prepend(photo);

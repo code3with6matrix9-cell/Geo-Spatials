@@ -2493,6 +2493,17 @@
       filter: saturate(.8)
     }
 
+    .contact-visual.linkedin-visual img {
+      object-fit: cover;
+      object-position: center;
+      filter: none;
+      mix-blend-mode: multiply
+    }
+
+    .contact-visual.linkedin-visual {
+      background: #fff
+    }
+
     /* subtle, editorial scroll reveals inspired by modern product storytelling */
     .js .rv {
       transition: opacity .75s cubic-bezier(.2, .75, .2, 1), transform .75s cubic-bezier(.2, .75, .2, 1)
