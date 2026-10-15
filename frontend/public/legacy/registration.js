@@ -581,7 +581,7 @@
       alt: "People collaborating across professional disciplines",
     },
     layers: {
-      src: "https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1200&q=85",
+      src: "/images/platform.jpg",
       alt: "Satellite imagery and Earth observation",
     },
     contour: {
