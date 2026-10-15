@@ -569,8 +569,8 @@
   // Replace vector placeholders with realistic, topic-matched imagery.
   const imgs = {
     sat: {
-      src: "https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?auto=format&fit=crop&w=1200&q=85",
-      alt: "Satellite view of Earth from orbit",
+      src: "/images/earthToPartnerModify.png",
+      alt: "Earth viewed from space",
     },
     drone: {
       src: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=1200&q=85",

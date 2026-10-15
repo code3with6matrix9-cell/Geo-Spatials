@@ -176,10 +176,26 @@
           "Digital Twins",
           "Modelling real places to support planning and decisions.",
         ],
+        [
+          "▤",
+          "Spatial Data Science and Visualization",
+          "Explore location data with statistics, spatial models, and visualisation.",
+        ],
+        [
+          "◉",
+          "Computer Vision and Object Detection",
+          "Detect buildings, roads, crops, and vehicles in drone and satellite imagery.",
+        ],
+        [
+          "▩",
+          "Deep Learning and Image Segmentation",
+          "Classify image pixels to map buildings, roads, water, vegetation, and terrain.",
+        ],
       ];
       document.getElementById("techg").innerHTML = TECH.map(function (t, i) {
         return (
-          '<article class="tc glass rv"><span class="n">0' +
+          '<article class="tc glass rv"><span class="n">' +
+          (i < 9 ? "0" : "") +
           (i + 1) +
           '</span><div class="ic">' +
           t[0] +
