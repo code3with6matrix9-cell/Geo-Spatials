@@ -192,14 +192,27 @@
           "Classify image pixels to map buildings, roads, water, vegetation, and terrain.",
         ],
       ];
+      var TECH_IMAGES = [
+        "/images/first.jpg",
+        "/images/second.jpg",
+        "/images/third.jpg",
+        "/images/fourth.jpg.png",
+        "/images/fifth.jpg.png",
+        "/images/sixth.jpg.png",
+        "/images/seventh.jpg",
+        "/images/eighth.jpg",
+        "/images/fourteen.jpg",
+        "/images/tenth.jpg",
+        "/images/eleventh.jpg",
+        "/images/twelvth.jpg",
+      ];
       document.getElementById("techg").innerHTML = TECH.map(function (t, i) {
         return (
-          '<article class="tc glass rv"><span class="n">' +
-          (i < 9 ? "0" : "") +
-          (i + 1) +
-          '</span><div class="ic">' +
-          t[0] +
-          "</div><h3>" +
+          '<article class="tc glass rv"><img class="tech-photo" loading="lazy" src="' +
+          TECH_IMAGES[i] +
+          '" alt="' +
+          t[1] +
+          '"><h3>' +
           t[1] +
           "</h3><p>" +
           t[2] +

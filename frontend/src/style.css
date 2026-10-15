@@ -1015,6 +1015,18 @@
       position: relative
     }
 
+    .tech-photo {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 10;
+      margin-bottom: 16px;
+      border-radius: 10px;
+      background: rgba(11, 37, 64, .05);
+      object-fit: contain;
+      object-position: center
+    }
+
     .tc .n {
       position: absolute;
       right: 18px;
