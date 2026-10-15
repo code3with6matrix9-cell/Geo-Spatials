@@ -199,11 +199,11 @@
         "/images/fourth.jpg.png",
         "/images/fifth.jpg.png",
         "/images/sixth.jpg.png",
-        "/images/seventh.jpg",
-        "/images/eighth.jpg",
-        "/images/fourteen.jpg",
-        "/images/tenth.jpg",
         "/images/eleventh.jpg",
+        "/images/tenth.jpg",
+        "/images/fourteen.jpg",
+        "/images/fifteen.jpg",
+        "/images/thirteen.jpg",
         "/images/twelvth.jpg",
       ];
       document.getElementById("techg").innerHTML = TECH.map(function (t, i) {
