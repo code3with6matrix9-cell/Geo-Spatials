@@ -668,8 +668,8 @@
     ["/images/partner.jpg", "Industry partner"],
   ]);
   const contactImgs = [
-    "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=800&q=80",
+    "/images/getInTouch.jpg",
+    "/images/team.jpg",
     "/images/linkedin_image_update.jpg",
   ];
   document.querySelectorAll("#contact .ct .glass").forEach((card, i) => {
