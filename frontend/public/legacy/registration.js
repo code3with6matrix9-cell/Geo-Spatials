@@ -647,20 +647,24 @@
       "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=80",
       "Experts collaborating",
     ],
-    [
-      "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80",
-      "Industry and organisation partners",
-    ],
   ];
-  document.querySelectorAll(".roles3 .glass").forEach((card, i) => {
-    let im = audienceImgs[i];
-    if (!im) return;
-    let photo = document.createElement("div");
-    photo.className = "role-photo";
-    photo.innerHTML =
-      '<img loading="lazy" src="' + im[0] + '" alt="' + im[1] + '">';
-    card.prepend(photo);
-  });
+  const addRolePhotos = (selector, images) => {
+    document.querySelectorAll(selector).forEach((card, index) => {
+      const image = images[index];
+      if (!image) return;
+      const photo = document.createElement("div");
+      photo.className = "role-photo";
+      photo.innerHTML =
+        '<img loading="lazy" src="' + image[0] + '" alt="' + image[1] + '">';
+      card.prepend(photo);
+    });
+  };
+  addRolePhotos("#about .roles3 .glass", audienceImgs);
+  addRolePhotos("#who .roles3 .glass", [
+    ["/images/learner.jpg", "Learner"],
+    ["/images/trainer.jpg", "Trainer"],
+    ["/images/partner.jpg", "Industry partner"],
+  ]);
   const contactImgs = [
     "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=800&q=80",
     "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=800&q=80",
