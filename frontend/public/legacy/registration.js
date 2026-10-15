@@ -625,6 +625,8 @@
     "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=80";
   commitImgs[3][0] =
     "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80";
+  commitImgs[5][0] = "/images/quality.jpg";
+  commitImgs[5][1] = "Quality by design";
   document.querySelectorAll("#pil .tc").forEach((card, i) => {
     let im = commitImgs[i];
     if (!im) return;
