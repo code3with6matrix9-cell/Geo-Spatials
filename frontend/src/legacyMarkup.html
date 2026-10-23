@@ -13,7 +13,7 @@
         <div class="links" id="nl">
           <a href="#about">About</a><a href="#info">Information</a>
           <a href="#tech">Technologies</a><a href="#who">Who can join</a>
-          <a href="#package">Package</a><a href="#academia">Academia</a>
+          <a href="#package">Package</a><a href="#credits">Internship &amp; Credits</a>
           <a href="#contact">Contact</a>
         </div>
         <div style="display: flex; gap: 8px; align-items: center">
@@ -28,6 +28,69 @@
     <section class="hero" id="home">
       <div class="earth-scene" aria-hidden="true">
         <img src="/images/landing-page-earth.jpg" alt="" />
+        <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMaxYMid slice">
+        <defs>
+          <radialGradient id="earth-ocean" cx="34%" cy="25%" r="78%">
+            <stop offset="0" stop-color="#68c7d8" />
+            <stop offset=".38" stop-color="#176888" />
+            <stop offset=".76" stop-color="#073959" />
+            <stop offset="1" stop-color="#031a32" />
+          </radialGradient>
+          <linearGradient id="earth-land" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#c3d9a0" />
+            <stop offset=".45" stop-color="#82b78d" />
+            <stop offset="1" stop-color="#397f86" />
+          </linearGradient>
+          <radialGradient id="earth-shade" cx="30%" cy="25%" r="78%">
+            <stop offset=".48" stop-color="#02172b" stop-opacity="0" />
+            <stop offset="1" stop-color="#02172b" stop-opacity=".72" />
+          </radialGradient>
+          <linearGradient id="solar-panel" x1="0" x2="1" y1="0" y2="1">
+            <stop stop-color="#c7f2ff" />
+            <stop offset="1" stop-color="#3489b9" />
+          </linearGradient>
+          <filter id="earth-glow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="24" />
+          </filter>
+          <clipPath id="earth-clip">
+            <circle cx="1190" cy="500" r="438" />
+          </clipPath>
+        </defs>
+        <ellipse cx="1190" cy="500" rx="470" ry="470" fill="#43c5dd" opacity=".2" filter="url(#earth-glow)" />
+        <ellipse class="orbit" cx="1190" cy="500" rx="570" ry="230" transform="rotate(-23 1190 500)" />
+        <ellipse class="orbit" cx="1190" cy="500" rx="555" ry="285" transform="rotate(29 1190 500)" opacity=".42" />
+        <circle cx="1190" cy="500" r="440" fill="none" stroke="#a9f3ff" stroke-width="3" opacity=".7" />
+        <circle cx="1190" cy="500" r="438" fill="url(#earth-ocean)" />
+        <g clip-path="url(#earth-clip)" fill="none" stroke="#a8eafa" stroke-opacity=".23" stroke-width="2">
+          <ellipse cx="1190" cy="500" rx="300" ry="438" />
+          <ellipse cx="1190" cy="500" rx="145" ry="438" />
+          <ellipse cx="1190" cy="500" rx="438" ry="170" />
+          <ellipse cx="1190" cy="500" rx="438" ry="315" />
+        </g>
+        <g clip-path="url(#earth-clip)" fill="url(#earth-land)" stroke="#d6e7ae" stroke-opacity=".35" stroke-width="2">
+          <path d="M821 246 858 216 900 223 921 204 963 219 982 244 1013 249 1024 277 1007 299 1021 321 1000 340 1007 368 980 384 967 412 938 424 925 455 900 461 880 438 862 432 848 404 826 391 819 363 796 342 801 316 782 298 795 272Z" />
+          <path d="M1005 435 1040 421 1071 435 1096 463 1110 500 1097 531 1090 566 1067 600 1055 640 1032 669 1015 641 1019 606 1000 574 1002 538 983 507 988 476 972 456Z" />
+          <path d="M1129 254 1160 231 1201 239 1227 219 1264 233 1293 222 1321 241 1359 239 1380 262 1416 268 1434 294 1410 318 1376 315 1356 337 1321 327 1301 351 1273 344 1254 367 1226 357 1208 378 1178 369 1163 343 1134 335 1121 305 1095 286 1101 266Z" />
+          <path d="M1162 383 1195 367 1231 378 1254 402 1279 421 1285 454 1270 479 1264 516 1245 548 1228 581 1206 607 1184 592 1176 557 1158 531 1152 498 1134 468 1141 435Z" />
+          <path d="M1340 545 1373 532 1412 542 1434 564 1422 590 1393 604 1366 589 1342 573Z" />
+          <path d="M1097 219 1114 207 1133 214 1127 230 1107 235Z" />
+        </g>
+        <circle cx="1190" cy="500" r="438" fill="url(#earth-shade)" />
+        <path d="M819 666c190 78 425 73 626-34" fill="none" stroke="#91e7f7" stroke-width="4" opacity=".22" />
+        <g class="satellite" transform="translate(1370 265) rotate(-18)">
+          <path d="M-104-19h72v38h-72zM32-19h72v38H32z" fill="url(#solar-panel)" stroke="#e2f7ff" stroke-width="2" />
+          <path d="M-80-19v38m24-38v38m24-38v38M56-19v38m24-38v38" stroke="#1f648f" stroke-width="2" />
+          <path d="M-31 0h62" stroke="#dff7ff" stroke-width="4" />
+          <rect x="-26" y="-23" width="52" height="46" rx="8" fill="#f5c96d" stroke="#fff0be" stroke-width="2" />
+          <path d="M0-23v-25m0 71v25m-8-46h16m-8-8v16" stroke="#fff0be" stroke-width="3" />
+          <circle cy="-48" r="5" fill="#fff5cb" />
+          <path d="M0 48v19m-11 0h22" stroke="#dff7ff" stroke-width="3" />
+        </g>
+        <circle cx="708" cy="412" r="4" fill="#f5d27b" />
+        <circle cx="1510" cy="290" r="3" fill="#fff" opacity=".8" />
+        <circle cx="1460" cy="726" r="4" fill="#fff" opacity=".65" />
+        <circle cx="860" cy="750" r="3" fill="#a9f3ff" opacity=".8" />
+      </svg> -->
       </div>
       <div class="wrap">
         <div>
