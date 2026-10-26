@@ -1,0 +1,138 @@
+#partners {
+  --bg: #e9f2f8;
+  --ink: #0b2540;
+  --mute: #4a6277;
+  --cy: #0a7f99;
+  --vi: #5b4bd6;
+  --pk: #b9821a;
+  --edge: rgba(255, 255, 255, .95);
+  --f: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --h: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --s: "Source Serif 4", Georgia, "Times New Roman", serif;
+  padding: 70px 0 80px;
+  overflow: hidden;
+  background: #e9f2f8;
+  color: var(--ink);
+  font-family: var(--f)
+}
+
+.ptn .hd {
+  max-width: 720px;
+  margin: 0 auto 30px;
+  text-align: center
+}
+
+.ptn .eb {
+  justify-content: center;
+  color: var(--cy)
+}
+
+.ptn .eb b {
+  background: var(--cy)
+}
+
+.ptn .hd h2 {
+  margin: 12px 0;
+  font-size: clamp(30px, 4.2vw, 52px);
+  line-height: 1.06;
+  letter-spacing: -.04em;
+  font-family: var(--s);
+  font-weight: 600
+}
+
+.ptn .hd p {
+  margin: 0;
+  color: var(--mute)
+}
+
+.ptn .mt2.pt {
+  display: flex;
+  width: max-content;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: 22px;
+  animation: partner-slideshow 32s linear infinite
+}
+
+.ptn .mq:hover .mt2.pt {
+  animation-play-state: paused
+}
+
+.pt-group {
+  display: flex;
+  flex: none;
+  gap: 22px
+}
+
+@keyframes partner-slideshow {
+  to {
+    transform: translateX(calc(-50% - 11px))
+  }
+}
+
+.ptn .pc {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 84px;
+  min-width: 170px;
+  padding: 12px 24px;
+  border: 1px solid #fff;
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, .96), rgba(255, 255, 255, .7));
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: inset 0 1px 0 #fff, 0 12px 30px rgba(11, 37, 64, .12);
+  transition: transform .3s cubic-bezier(.2, .8, .2, 1), box-shadow .3s
+}
+
+.ptn .pc:hover {
+  transform: translateY(-6px) scale(1.05);
+  box-shadow: inset 0 1px 0 #fff, 0 18px 36px rgba(10, 127, 153, .22)
+}
+
+.ptn .pc img {
+  display: block;
+  width: auto;
+  height: 46px;
+  max-width: 160px;
+  object-fit: contain
+}
+
+.ptn .pc.dk {
+  border-color: #fff;
+  background: linear-gradient(135deg, rgba(255, 255, 255, .96), rgba(255, 255, 255, .7));
+  box-shadow: inset 0 1px 0 #fff, 0 12px 30px rgba(11, 37, 64, .12)
+}
+
+.ptn .pc.pl img {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  box-shadow: 0 6px 14px rgba(120, 90, 200, .28)
+}
+
+.ptn .pc .nm {
+  margin-left: 10px;
+  color: #0b2540;
+  font: 800 20px/1 var(--h);
+  letter-spacing: -.02em
+}
+
+@media(max-width:600px) {
+  #partners {
+    padding: 70px 0 80px
+  }
+
+  .ptn .pc {
+    min-width: 170px;
+    height: 84px;
+    padding: 12px 24px
+  }
+
+  .ptn .mt2.pt,
+  .ptn .pt-group {
+    gap: 22px
+  }
+}

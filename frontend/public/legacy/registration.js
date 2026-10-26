@@ -573,7 +573,7 @@
       alt: "Earth viewed from space",
     },
     drone: {
-      src: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=1200&q=85",
+      src: "/images/updated_drone_image.webp",
       alt: "Drone flying above a landscape",
     },
     net: {

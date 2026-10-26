@@ -618,7 +618,13 @@
               document.querySelectorAll("#nl a").forEach(function (a) {
                 a.classList.toggle(
                   "on",
-                  a.getAttribute("href") == "#" + e.target.id,
+                  a.getAttribute("href") ==
+                    "#" +
+                      (["institutions", "labs", "accreditation"].includes(
+                        e.target.id,
+                      )
+                        ? "package"
+                        : e.target.id),
                 );
               });
           });
