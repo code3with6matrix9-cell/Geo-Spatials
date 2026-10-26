@@ -258,6 +258,89 @@
       ],
     },
   };
+  roleDefs.organisation = {
+    label: "Organisation",
+    summary:
+      "Submit an institution registration application.",
+    title: "GEOSPATIALS Institution Registration Application",
+    preview: true,
+    groups: [
+      [
+        "Section A — Institution details",
+        [
+          ["institutionName", "Institution name", "text", 1],
+          [
+            "institutionType",
+            "Institution type",
+            "radios",
+            1,
+            [
+              "COLLEGE|College",
+              "UNIVERSITY|University",
+              "DEEMED_UNIVERSITY|Deemed-to-be University",
+              "POLYTECHNIC|Polytechnic / Diploma Institute",
+              "RESEARCH_INSTITUTE|Research Institute",
+              "TRAINING_INSTITUTE|Training / Skill Development Institute",
+              "OTHER|Other",
+            ],
+          ],
+          ["officialWebsite", "Official website", "url", 0],
+          ["officialEmail", "Official email", "email", 1],
+        ],
+      ],
+      [
+        "Section B — Location",
+        [
+          ["country", "Country", "text", 1, "India"],
+          ["state", "State", "text", 1],
+          ["city", "City", "text", 1],
+        ],
+      ],
+      [
+        "Section C — Authorised representative",
+        [
+          ["representative", "Representative", "text", 1],
+          [
+            "designation",
+            "Designation",
+            "radios",
+            1,
+            [
+              "PRINCIPAL_DIRECTOR|Principal / Director",
+              "DEAN_HOD|Dean / Head of Department",
+              "PLACEMENT_TRAINING_OFFICER|Placement / Training Officer",
+              "FACULTY_COORDINATOR|Faculty Coordinator",
+              "AUTHORISED_ADMINISTRATOR|Authorised Administrator",
+              "OTHER|Other",
+            ],
+          ],
+          ["phone", "Phone", "tel", 1],
+        ],
+      ],
+      [
+        "Section D — Collaboration interests",
+        [
+          [
+            "collaborationInterests",
+            "Select all that apply",
+            "chips",
+            1,
+            [
+              "INDUSTRIAL_TRAINING|Industrial Training",
+              "WORKSHOPS_WEBINARS|Workshops & Webinars",
+              "INTERNSHIPS_CAREER_OPPORTUNITIES|Internships & Career Opportunities",
+              "INDUSTRY_ACADEMIA_COLLABORATION|Industry-Academia Collaboration",
+              "GIS_REMOTE_SENSING_LAB|GIS / Remote Sensing Lab Setup",
+              "RESEARCH_PROJECT_COLLABORATION|Research & Project Collaboration",
+              "FACULTY_DEVELOPMENT_UPSKILLING|Faculty Development / Upskilling",
+              "STUDENT_REGISTRATION_RESOURCES|Student Registration & Learning Resources",
+            ],
+          ],
+          ["description", "Description", "textarea", 0],
+        ],
+      ],
+    ],
+  };
   const tech = [
     "GIS|GIS and spatial analysis",
     "REMOTE_SENSING|Remote sensing",
@@ -327,10 +410,12 @@
     foot.hidden = false;
     foot.innerHTML =
       '<button class="btn o sm reg-back" type="button" id="reg-back">← Back</button><button class="btn sm" type="submit" form="role-form" id="reg-submit">' +
-      r.title +
-      " ↗</button>";
+      (r.preview ? "Copy application details" : "Submit") +
+      "</button>";
     let html =
-      '<form id="role-form" novalidate><div id="reg-form-error"></div>';
+      '<form id="role-form" novalidate' +
+      (r.preview ? ' data-preview="true"' : "") +
+      '><div id="reg-form-error"></div>';
     r.groups.forEach((g, gi) => {
       html +=
         '<section class="reg-group"><h3>' +
@@ -338,17 +423,19 @@
         '</h3><div class="reg-grid">';
       g[1].forEach((f) => {
         let [name, label, type, required, options] = f,
-          full = [
-            "institution",
-            "fieldOfStudy",
-            "bio",
-            "portfolioUrl",
-            "technologies",
-            "teachingFormats",
-            "sectors",
-            "opportunityTypes",
-            "hiringNeeds",
-          ].includes(name);
+          full = r.preview
+            ? true
+            : [
+                "institution",
+                "fieldOfStudy",
+                "bio",
+                "portfolioUrl",
+                "technologies",
+                "teachingFormats",
+                "sectors",
+                "opportunityTypes",
+                "hiringNeeds",
+              ].includes(name);
         html +=
           '<div class="reg-field ' +
           (full ? "reg-full" : "") +
@@ -356,7 +443,7 @@
           name +
           '">' +
           label +
-          (required ? ' <span style="color:#f0c95c">*</span>' : "") +
+          (required ? ' <span style="color:#0a829b">*</span>' : "") +
           "</label>";
         if (type === "select") {
           let opts = options || [];
@@ -371,10 +458,49 @@
             opts
               .map((o) => {
                 let [v, l] = o.split("|");
-                return '<option value="' + v + '">' + l + "</option>";
+                let selected =
+                  key === "organisation" &&
+                  name === "organisationType" &&
+                  v === "ACADEMIC_INSTITUTION";
+                return (
+                  '<option value="' +
+                  v +
+                  '"' +
+                  (selected ? " selected" : "") +
+                  ">" +
+                  l +
+                  "</option>"
+                );
               })
               .join("") +
             "</select>";
+        } else if (type === "radios") {
+          html +=
+            '<fieldset class="reg-radio-group" aria-label="' +
+            label +
+            '">' +
+            (options || [])
+              .map((o, index) => {
+                let [v, l] = o.split("|");
+                let selected =
+                  (name === "institutionType" && v === "UNIVERSITY") ||
+                  (name === "designation" &&
+                    v === "PLACEMENT_TRAINING_OFFICER");
+                return (
+                  '<label class="reg-radio-option"><input type="radio" name="' +
+                  name +
+                  '" value="' +
+                  v +
+                  '"' +
+                  (required && index === 0 ? " required" : "") +
+                  (selected ? " checked" : "") +
+                  '><span>' +
+                  l +
+                  "</span></label>"
+                );
+              })
+              .join("") +
+            "</fieldset>";
         } else if (type === "chips") {
           let opts = options === "tech" ? tech : options;
           html +=
@@ -384,10 +510,18 @@
             opts
               .map((o) => {
                 let [v, l] = o.split("|");
+                let selected =
+                  name === "collaborationInterests" &&
+                  [
+                    "INDUSTRIAL_TRAINING",
+                    "INTERNSHIPS_CAREER_OPPORTUNITIES",
+                  ].includes(v);
                 return (
                   '<button type="button" class="reg-chip" data-value="' +
                   v +
-                  '" aria-pressed="false">' +
+                  '" aria-pressed="' +
+                  selected +
+                  '">' +
                   l +
                   "</button>"
                 );
@@ -397,7 +531,11 @@
             name +
             '" ' +
             (required ? "required" : "") +
-            ">";
+            ' value="' +
+            (name === "collaborationInterests"
+              ? "INDUSTRIAL_TRAINING,INTERNSHIPS_CAREER_OPPORTUNITIES"
+              : "") +
+            '">';
         } else if (type === "textarea")
           html +=
             '<textarea id="rf-' +
@@ -418,14 +556,19 @@
             '" ' +
             (required ? "required" : "") +
             (type === "number" ? ' min="0" max="60"' : "") +
-            (name === "country" ? ' value="India"' : "") +
+            (options && typeof options === "string"
+              ? ' value="' + esc(options) + '"'
+              : name === "country"
+                ? ' value="India"'
+                : "") +
             ">";
         html += "</div>";
       });
       html += "</div></section>";
     });
-    html +=
-      '<section class="reg-group"><h3>Stay in the loop</h3><label class="reg-check"><input type="checkbox" name="notifyOnLaunch" checked><span>Notify me when GEOSPATIALS launches.</span></label><label class="reg-check"><input type="checkbox" name="consentToContact" required><span>I agree to be contacted by Remosens Private Limited about GEOSPATIALS launch updates and early access. <b style="color:#f0c95c">Required</b></span></label></section></form>';
+    html += r.preview
+      ? '<p class="reg-preview-note">This is a form preview, not a live registration submission. Copying the details does not register the institution or send data to GEOSPATIALS.</p></form>'
+      : '<section class="reg-group"><h3>Stay in the loop</h3><label class="reg-check"><input type="checkbox" name="notifyOnLaunch" checked><span>Notify me when GEOSPATIALS launches.</span></label><label class="reg-check"><input type="checkbox" name="consentToContact" required><span>I agree to be contacted by Remosens Private Limited about GEOSPATIALS launch updates and early access. <b style="color:#f0c95c">Required</b></span></label></section></form>';
     body.innerHTML = html;
   }
   body.addEventListener("click", (e) => {
@@ -481,6 +624,61 @@
         invalid.focus();
         err.innerHTML =
           '<div class="reg-banner">Please complete the required fields and check your consent.</div>';
+      }
+      return;
+    }
+    if (r.preview) {
+      const labels = new Map();
+      form.querySelectorAll("label[for]").forEach((fieldLabel) => {
+        labels.set(
+          fieldLabel.htmlFor.replace(/^rf-/, ""),
+          fieldLabel.textContent.replace(/\s*\*$/, ""),
+        );
+      });
+      const details = [...new FormData(form).entries()]
+        .filter(([, value]) => value !== "")
+        .map(([name, value]) => {
+          const fieldLabel = labels.get(name) || name;
+          if (name === "collaborationInterests") {
+            value = String(value)
+              .split(",")
+              .map((selectedValue) =>
+                form.querySelector(
+                  '[data-chip-group="collaborationInterests"] [data-value="' +
+                    selectedValue +
+                    '"]',
+                )?.textContent,
+              )
+              .filter(Boolean)
+              .join(", ");
+          } else {
+            const selectedRadio = form.querySelector(
+              'input[type="radio"][name="' + name + '"]:checked',
+            );
+            if (selectedRadio) {
+              value = selectedRadio.nextElementSibling?.textContent || value;
+            }
+          }
+          return fieldLabel + ": " + value;
+        })
+        .join("\n");
+      submit.disabled = true;
+      submit.textContent = "Copying…";
+      try {
+        await navigator.clipboard.writeText(
+          "GEOSPATIALS INSTITUTION REGISTRATION APPLICATION\n" + details,
+        );
+        title.textContent = "Application details copied";
+        sub.textContent =
+          "This is a form preview, not a live registration submission.";
+        body.innerHTML =
+          '<div class="reg-done"><span class="done-check">✓</span><p>Application details copied to your clipboard.</p><p>Copying does not register the institution or send data to GEOSPATIALS.</p><button class="btn sm" id="reg-done-close" style="margin-top:24px">Done</button></div>';
+        foot.hidden = true;
+      } catch (error) {
+        err.innerHTML =
+          '<div class="reg-banner">Could not copy application details. Please allow clipboard access and try again.</div>';
+        submit.disabled = false;
+        submit.textContent = "Copy application details";
       }
       return;
     }
@@ -559,10 +757,15 @@
     a.addEventListener("click", (e) => {
       e.preventDefault();
       let role = null;
+      let requestedRole = (a.dataset.role || "").toLowerCase();
       let label = (a.textContent || "").toLowerCase();
-      if (label.includes("expert")) role = "expert";
-      else if (label.includes("partner")) role = "partner";
-      else if (label.includes("learner")) role = "learner";
+      if (requestedRole === "organisation") role = "organisation";
+      else if (requestedRole === "expert" || label.includes("expert"))
+        role = "expert";
+      else if (requestedRole === "partner" || label.includes("partner"))
+        role = "partner";
+      else if (requestedRole === "learner" || label.includes("learner"))
+        role = "learner";
       open(role);
     }),
   );

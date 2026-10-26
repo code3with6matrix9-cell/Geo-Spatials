@@ -262,27 +262,6 @@
           );
         })
         .join("");
-      document.getElementById("ints").innerHTML = [
-        "GIS",
-        "Remote Sensing",
-        "Drone / UAV",
-        "Photogrammetry",
-        "LiDAR",
-        "Surveying",
-        "GeoAI",
-        "Web GIS",
-        "Digital Twins",
-      ]
-        .map(function (c) {
-          return (
-            '<label><input type="checkbox" name="int" value="' +
-            c +
-            '"><span>' +
-            c +
-            "</span></label>"
-          );
-        })
-        .join("");
       // illustrations (generated SVG art)
       var ART = {
         layers: function () {
@@ -421,62 +400,6 @@
           ART[a.dataset.art]() +
           "</svg>";
       });
-      // form
-      document
-        .getElementById("reg-form")
-        .addEventListener("submit", function (ev) {
-          ev.preventDefault();
-          var f = ev.target,
-            msg = document.getElementById("msg"),
-            v = {
-              role: f.role.value,
-              name: f.elements["name"].value,
-              email: f.email.value,
-              phone: f.phone.value,
-              city: f.city.value,
-              org: f.org.value,
-              level: f.level.value,
-              mode: f.mode.value,
-              interests: [].map
-                .call(f.querySelectorAll("[name=int]:checked"), function (x) {
-                  return x.value;
-                })
-                .join(", "),
-            };
-          if (CONFIG.endpoint) {
-            fetch(CONFIG.endpoint, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(v),
-            })
-              .then(function () {
-                msg.textContent = "You are registered. Welcome to GEOSPATIALS!";
-                f.reset();
-              })
-              .catch(function () {
-                msg.textContent = "Something went wrong. Please try again.";
-              });
-          } else {
-            msg.textContent =
-              "Thanks " +
-              v.name.split(" ")[0] +
-              "! Opening your email to send the registration…";
-            var b = Object.keys(v)
-              .map(function (k) {
-                return k + ": " + v[k];
-              })
-              .join("\n");
-            location.href =
-              "mailto:" +
-              CONFIG.email +
-              "?subject=" +
-              encodeURIComponent(
-                "GEOSPATIALS interest registration: " + v.role,
-              ) +
-              "&body=" +
-              encodeURIComponent(b);
-          }
-        });
       var nl = document.getElementById("nl"),
         mt = document.getElementById("mt");
       mt.onclick = function () {
@@ -558,18 +481,6 @@
           );
         })
         .join("");
-      document.querySelectorAll("[data-role]").forEach(function (b) {
-        b.addEventListener("click", function () {
-          var r = document.querySelector(
-            '#reg-form input[name=role][value="' + b.dataset.role + '"]',
-          );
-          if (r) r.checked = true;
-          location.hash = "#register";
-          setTimeout(function () {
-            document.getElementById("n").focus({ preventScroll: true });
-          }, 700);
-        });
-      });
       var io = new IntersectionObserver(
         function (es) {
           es.forEach(function (e) {
@@ -638,6 +549,9 @@
       new IntersectionObserver(function (e) {
         fab.classList.toggle("on", !e[0].isIntersecting);
       }).observe(document.getElementById("home"));
+      new IntersectionObserver(function (e) {
+        fab.classList.toggle("register-visible", e[0].isIntersecting);
+      }).observe(document.getElementById("register"));
       document.addEventListener("pointermove", function (e) {
         var g = e.target.closest && e.target.closest(".glass");
         if (g) {

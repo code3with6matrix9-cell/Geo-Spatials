@@ -13,7 +13,7 @@
         <div class="links" id="nl">
           <a href="#about">About</a><a href="#info">Information</a>
           <a href="#tech">Technologies</a><a href="#who">Who can join</a>
-          <a href="#package">Package</a><a href="#credits">Internship &amp; Credits</a>
+          <a href="#package">Package</a><a href="#academia">Academia</a>
           <a href="#hisar">Hisar Centre</a>
           <a href="#contact">Contact</a>
         </div>
@@ -798,143 +798,65 @@
 
     <section id="register">
       <div class="wrap">
-        <div class="reg">
-          <div class="glass rv">
-            <form id="reg-form">
-              <div class="fg">
-                <div class="full">
-                  <label class="l">I am a</label>
-                  <div class="roles" role="radiogroup">
-                    <label
-                      ><input
-                        type="radio"
-                        name="role"
-                        value="Learner"
-                        checked
-                      /><span>Learner</span></label
-                    ><label
-                      ><input
-                        type="radio"
-                        name="role"
-                        value="Trainer / Expert"
-                      /><span>Expert</span></label
-                    ><label
-                      ><input
-                        type="radio"
-                        name="role"
-                        value="Industry Partner"
-                      /><span>Partner</span></label
-                    >
-                  </div>
-                </div>
-                <div>
-                  <label class="l" for="n">Full name</label
-                  ><input
-                    class="in"
-                    id="n"
-                    name="name"
-                    required
-                    autocomplete="name"
-                  />
-                </div>
-                <div>
-                  <label class="l" for="e">Email</label
-                  ><input
-                    class="in"
-                    id="e"
-                    name="email"
-                    type="email"
-                    required
-                    autocomplete="email"
-                  />
-                </div>
-                <div>
-                  <label class="l" for="p">Phone</label
-                  ><input
-                    class="in"
-                    id="p"
-                    name="phone"
-                    type="tel"
-                    autocomplete="tel"
-                  />
-                </div>
-                <div>
-                  <label class="l" for="c">State and city</label
-                  ><input
-                    class="in"
-                    id="c"
-                    name="city"
-                    placeholder="e.g. Haryana, Faridabad"
-                  />
-                </div>
-                <div class="full">
-                  <label class="l" for="o">Institution or organisation</label
-                  ><input class="in" id="o" name="org" />
-                </div>
-                <div>
-                  <label class="l" for="lv">Level</label
-                  ><select id="lv" name="level">
-                    <option>Beginner</option>
-                    <option>Intermediate</option>
-                    <option>Advanced</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="l" for="md">Preferred mode</label
-                  ><select id="md" name="mode">
-                    <option>Online</option>
-                    <option>Offline</option>
-                    <option>Hybrid</option>
-                  </select>
-                </div>
-                <div class="full">
-                  <label class="l">Interested in</label>
-                  <div class="cbs" id="ints"></div>
-                </div>
-                <label class="cons full"
-                  ><input type="checkbox" name="consent" required /> I agree to
-                  be contacted about
-                  <strong class="gs">GEOSPATIALS</strong> launch and early
-                  access.</label
-                >
-                <div class="full">
-                  <button class="btn" type="submit" style="width: 100%">
-                    Register your interest ↗
-                  </button>
-                  <p
-                    class="msg"
-                    id="msg"
-                    role="status"
-                    style="margin-top: 10px"
-                  ></p>
-                </div>
-              </div>
-            </form>
+        <div class="registration-showcase rv">
+          <div class="registration-intro">
+            <div class="registration-eyebrow"><span></span>Join GEOSPATIALS</div>
+            <h2>Make your next move <em>count.</em></h2>
+            <p>
+              Learn geospatial skills, share your expertise, or connect your
+              organisation with opportunities across the industry.
+            </p>
+            <div class="registration-note">
+              <span class="registration-note-icon" aria-hidden="true">↗</span>
+              <span>Choose how you want to take part. We’ll guide you through the next step.</span>
+            </div>
+            <div class="registration-orbit" aria-hidden="true">
+              <span class="registration-orbit-core"></span>
+              <span class="registration-orbit-dot"></span>
+            </div>
+            <span class="registration-coordinates" aria-hidden="true">LEARN &nbsp;·&nbsp; TEACH &nbsp;·&nbsp; COLLABORATE</span>
           </div>
-          <div class="glass rv" style="padding: 28px">
-            <div class="lab">What happens next</div>
-            <ol class="nx" style="margin-top: 18px">
-              <li>
-                <div><b>You register</b><span>Share a few details.</span></div>
-              </li>
-              <li>
-                <div>
-                  <b>We review</b
-                  ><span>Your role and interests help us plan programs.</span>
-                </div>
-              </li>
-              <li>
-                <div>
-                  <b>You hear from us</b
-                  ><span>Launch news and early access before the public.</span>
-                </div>
-              </li>
-            </ol>
-            <div class="btns" style="margin-top: 24px">
-              <button class="btn o sm" onclick="window.print()">
-                Save brochure as PDF
+          <div class="registration-card">
+            <div class="registration-card-heading">
+              <span class="registration-card-step">GET STARTED</span>
+              <h3>How would you like to connect?</h3>
+              <p>Select a profile to continue with a short registration.</p>
+            </div>
+            <div class="registration-options">
+              <button class="registration-option" type="button" data-open-register data-role="Learner">
+                <span class="registration-option-icon" aria-hidden="true">01</span>
+                <span class="registration-option-copy">
+                  <strong>Learner</strong>
+                  <small>Build geospatial skills and your career.</small>
+                </span>
+                <span class="registration-option-arrow" aria-hidden="true">↗</span>
+              </button>
+              <button class="registration-option" type="button" data-open-register data-role="Expert">
+                <span class="registration-option-icon" aria-hidden="true">02</span>
+                <span class="registration-option-copy">
+                  <strong>Expert</strong>
+                  <small>Teach, mentor, and share your experience.</small>
+                </span>
+                <span class="registration-option-arrow" aria-hidden="true">↗</span>
+              </button>
+              <button class="registration-option" type="button" data-open-register data-role="Partner">
+                <span class="registration-option-icon" aria-hidden="true">03</span>
+                <span class="registration-option-copy">
+                  <strong>Industry partner</strong>
+                  <small>Collaborate, find talent, and create opportunities.</small>
+                </span>
+                <span class="registration-option-arrow" aria-hidden="true">↗</span>
+              </button>
+              <button class="registration-option" type="button" data-open-register data-role="Organisation">
+                <span class="registration-option-icon" aria-hidden="true">04</span>
+                <span class="registration-option-copy">
+                  <strong>Organisation</strong>
+                  <small>Connect your institution with geospatial training and talent.</small>
+                </span>
+                <span class="registration-option-arrow" aria-hidden="true">↗</span>
               </button>
             </div>
+            <p class="registration-card-foot">Your details will help us tailor the experience to you.</p>
           </div>
         </div>
       </div>
@@ -955,7 +877,7 @@
             <div class="lab">Get in touch</div>
             <h3><strong class="gs">GEOSPATIALS</strong> team</h3>
             <p>Questions about registration, programs or partnerships.</p>
-            <a class="btn sm" id="mail" href="#">Send email</a>
+            <a class="btn sm" id="mail" href="geospatials@theremosens.com">Send email</a>
           </div>
           <div class="glass rv">
             <div class="lab">Experts and partners</div>
@@ -972,7 +894,7 @@
             <a
               class="btn o sm"
               id="li"
-              href="https://www.linkedin.com/"
+              href="https://www.linkedin.com/showcase/144044971/admin/dashboard/"
               target="_blank"
               rel="noopener"
               >LinkedIn</a

@@ -668,11 +668,17 @@ footer img {
   right: 18px;
   bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
   transform: translateY(120px);
-  transition: transform .4s
+  transition: transform .4s, opacity .2s, visibility .2s
 }
 
 .fab.on {
   transform: none
+}
+
+.fab.register-visible {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none
 }
 
 .mod {
