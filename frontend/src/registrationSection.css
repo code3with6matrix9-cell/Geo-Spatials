@@ -221,19 +221,20 @@
 
 .registration-options {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 11px;
-  margin-top: 24px
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  margin-top: 24px;
+  width: 100%
 }
 
 .registration-option {
   display: grid;
-  grid-template-columns: 42px minmax(0, 1fr) 24px;
+  grid-template-columns: 44px minmax(0, 1fr) 26px;
   align-items: center;
-  gap: 13px;
+  gap: 14px;
   width: 100%;
-  min-height: 76px;
-  padding: 13px 15px;
+  min-height: 78px;
+  padding: 14px 16px;
   border: 1px solid #e3ebf0;
   border-radius: 14px;
   background: #fff;
@@ -241,10 +242,6 @@
   cursor: pointer;
   text-align: left;
   transition: border-color .2s ease, background .2s ease, transform .2s ease, box-shadow .2s ease
-}
-
-.registration-options {
-  grid-template-columns: repeat(2, minmax(0, 1fr))
 }
 
 .registration-option:hover {
@@ -261,31 +258,40 @@
 
 .registration-option-icon {
   display: grid;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   place-items: center;
   border-radius: 12px;
   background: #eaf5f7;
   color: var(--register-accent);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: .04em
 }
 
 .registration-option-copy {
-  display: grid;
-  gap: 4px
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  min-width: 0;
+  text-align: left
 }
 
 .registration-option-copy strong {
   color: var(--register-ink);
-  font-size: 15px
+  font-size: 15px;
+  line-height: 1.3
 }
 
 .registration-option-copy small {
   color: var(--register-muted);
   font-size: 12px;
-  line-height: 1.4
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden
 }
 
 .registration-option-arrow {
@@ -311,23 +317,23 @@
   text-align: center
 }
 
-/* Match the role-specific form fields to the new light registration card. */
+/* Modern light theme for the role-specific registration forms. */
 .reg-modal {
-  width: min(1100px, 100%);
+  width: min(880px, 100%);
   height: min(900px, calc(100svh - 24px));
   max-height: calc(100svh - 24px);
   padding: 0;
   border: 1px solid rgba(255, 255, 255, .9);
-  border-radius: 22px;
-  background: #f7fafc;
+  border-radius: 24px;
+  background: #f6f9fc;
   color: var(--register-ink);
   box-shadow: 0 32px 90px rgba(2, 22, 40, .35)
 }
 
 .reg-head {
-  padding: 24px 28px 18px;
+  padding: 26px 30px 20px;
   border-bottom: 1px solid #e4ebf0;
-  background: #fff
+  background: linear-gradient(180deg, #fff, #fbfdfe)
 }
 
 .reg-head > div > div:first-child {
@@ -348,7 +354,15 @@
   color: var(--register-ink)
 }
 
+.reg-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  transition: border-color .2s ease, background .2s ease, transform .2s ease
+}
+
 .reg-icon:hover {
+  transform: rotate(90deg);
   border-color: rgba(10, 130, 155, .4);
   background: #eaf5f7
 }
@@ -356,28 +370,87 @@
 .reg-body {
   min-height: 0;
   flex: 1 1 auto;
-  padding: 24px 28px;
-  background: #f7fafc
+  padding: 26px 30px;
+  background: #f6f9fc
+}
+
+.reg-roles {
+  display: grid;
+  gap: 12px
 }
 
 .reg-role {
-  border-color: #e1eaf0;
-  border-radius: 14px;
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) 30px;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  padding: 15px 18px;
+  border: 1px solid #e1eaf0;
+  border-radius: 16px;
   background: #fff;
-  color: var(--register-ink)
+  color: var(--register-ink);
+  text-align: left;
+  transition: border-color .2s ease, background .2s ease, transform .2s ease, box-shadow .2s ease
 }
 
 .reg-role:hover {
+  transform: translateY(-2px);
   border-color: rgba(10, 130, 155, .45);
-  background: #f6fbfc
+  background: #f8fcfd;
+  box-shadow: 0 12px 26px rgba(10, 73, 105, .1)
+}
+
+.reg-role:focus-visible {
+  outline: 3px solid rgba(10, 130, 155, .38);
+  outline-offset: 2px
+}
+
+.reg-role-badge {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 13px;
+  background: #eaf5f7;
+  color: var(--register-accent);
+  font: 800 12px var(--f);
+  letter-spacing: .06em
+}
+
+.reg-role-copy {
+  display: grid;
+  gap: 3px;
+  min-width: 0
+}
+
+.reg-role strong {
+  display: block;
+  color: var(--register-ink);
+  font-size: 15px;
+  font-weight: 700
 }
 
 .reg-role small {
-  color: var(--register-muted)
+  display: block;
+  color: var(--register-muted);
+  font-size: 13px;
+  line-height: 1.45
+}
+
+.reg-role-arrow {
+  justify-self: end;
+  color: var(--register-accent);
+  font-size: 20px;
+  transition: transform .2s ease
+}
+
+.reg-role:hover .reg-role-arrow {
+  transform: translateX(3px)
 }
 
 .reg-group {
-  padding: 14px;
+  padding: 16px 18px;
   border: 1px solid #e5edf2;
   border-radius: 16px;
   background: #fff
@@ -405,6 +478,7 @@
 
 .reg-radio-group {
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
   gap: 8px;
   margin: 0;
   padding: 0;
@@ -413,32 +487,43 @@
 
 .reg-radio-option {
   display: flex;
-  align-items: flex-start;
-  gap: 9px;
-  color: #52687a;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 10px 13px;
+  border: 1px solid #dfe8ee;
+  border-radius: 12px;
+  background: #fff;
+  color: #40566a;
   font-size: 13px;
-  line-height: 1.45;
-  cursor: pointer
+  line-height: 1.4;
+  cursor: pointer;
+  transition: border-color .18s ease, background .18s ease, color .18s ease
+}
+
+.reg-radio-option:hover {
+  border-color: rgba(10, 130, 155, .45);
+  background: #f8fcfd
+}
+
+.reg-radio-option:has(input:checked) {
+  border-color: var(--register-accent);
+  background: #e9f5f7;
+  color: #0a6a7e;
+  font-weight: 600
 }
 
 .reg-radio-option input {
   width: 16px;
   height: 16px;
   flex: none;
-  margin: 1px 0 0;
+  margin: 0;
   accent-color: var(--register-accent)
 }
 
 .reg-radio-option input:focus-visible {
   outline: 2px solid rgba(10, 130, 155, .45);
   outline-offset: 2px
-}
-
-.reg-preview-note {
-  margin: 0;
-  color: var(--register-muted);
-  font-size: 12px;
-  line-height: 1.55
 }
 
 .reg-grid {
@@ -455,11 +540,11 @@
 .reg-field input,
 .reg-field select,
 .reg-field textarea {
-  min-height: 42px;
-  padding: 9px 11px;
-  border: 1px solid #dce6ec;
-  border-radius: 11px;
-  background: #f9fbfc;
+  min-height: 46px;
+  padding: 11px 13px;
+  border: 1px solid #d7e2ea;
+  border-radius: 12px;
+  background: #fff;
   color: var(--register-ink);
   font: 400 14px var(--f);
   transition: border-color .18s ease, box-shadow .18s ease, background .18s ease
@@ -480,7 +565,15 @@
   border-color: var(--register-accent);
   outline: 0;
   background: #fff;
-  box-shadow: 0 0 0 3px rgba(10, 130, 155, .13)
+  box-shadow: 0 0 0 4px rgba(10, 130, 155, .12)
+}
+
+.reg-field select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%230a829b' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 13px center;
+  padding-right: 36px
 }
 
 .reg-field select option {
@@ -493,50 +586,161 @@
 }
 
 .reg-chip {
-  padding: 5px 8px;
-  border-color: #dce6ec;
-  background: #f9fbfc;
-  color: #52687a;
-  font-size: 11px
+  position: relative;
+  padding: 8px 14px 8px 31px;
+  border-color: #d7e2ea;
+  background: #fff;
+  color: #40566a;
+  font-size: 13px;
+  transition: border-color .18s ease, background .18s ease, color .18s ease, transform .18s ease
+}
+
+.reg-chip::before {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  content: "✓";
+  transform: translateY(-50%) scale(.5);
+  opacity: 0;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  transition: opacity .18s ease, transform .18s ease
 }
 
 .reg-chip:hover {
-  border-color: rgba(10, 130, 155, .4);
+  border-color: rgba(10, 130, 155, .5);
   background: #f2f9fa
 }
 
 .reg-chip[aria-pressed=true] {
   border-color: var(--register-accent);
-  background: #e6f4f6;
-  color: #08687c
+  background: var(--register-accent);
+  color: #fff
+}
+
+.reg-chip[aria-pressed=true]::before {
+  opacity: 1;
+  transform: translateY(-50%) scale(1)
 }
 
 .reg-check {
-  color: #52687a
+  align-items: flex-start;
+  gap: 11px;
+  padding: 12px 14px;
+  border: 1px solid #e5edf2;
+  border-radius: 12px;
+  background: #fbfdfe;
+  color: #40566a;
+  font-size: 13px;
+  transition: border-color .18s ease, background .18s ease
+}
+
+.reg-check:hover {
+  border-color: rgba(10, 130, 155, .35)
 }
 
 .reg-check input {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  margin: 0;
   accent-color: var(--register-accent)
 }
 
+.reg-required-tag {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #f7efdc;
+  color: #9b7025;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase
+}
+
 #reg-form-error .reg-banner {
+  padding: 13px 15px;
   border-color: #f2c5bf;
+  border-radius: 12px;
   background: #fff3f1;
-  color: #9f3128
+  color: #9f3128;
+  font-size: 13px
 }
 
 .reg-foot {
-  padding: 16px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 30px;
   border-top: 1px solid #e4ebf0;
   background: #fff
+}
+
+.reg-foot .btn {
+  min-height: 46px;
+  padding: 11px 24px;
+  border-radius: 12px;
+  font-size: 14px
+}
+
+.reg-foot .btn.o {
+  border: 1px solid #d7e2ea;
+  background: #fff;
+  color: var(--register-ink);
+  box-shadow: none;
+  transition: border-color .2s ease, background .2s ease, color .2s ease
+}
+
+.reg-foot .btn.o:hover {
+  border-color: rgba(10, 130, 155, .5);
+  background: #f2f9fa;
+  color: var(--register-accent)
+}
+
+.reg-foot .btn:not(.o) {
+  box-shadow: 0 10px 24px rgba(10, 130, 155, .28)
 }
 
 .reg-done {
   color: var(--register-muted)
 }
 
-.reg-done p[style] {
-  color: var(--register-ink) !important
+.reg-done p {
+  color: var(--register-muted);
+  font-size: 14px;
+  line-height: 1.6
+}
+
+.reg-foot .reg-back {
+  margin-right: 0
+}
+
+.reg-done .done-check {
+  width: 60px;
+  height: 60px;
+  border: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0a829b, #14b3a4);
+  color: #fff;
+  font-size: 26px;
+  box-shadow: 0 12px 28px rgba(10, 130, 155, .35)
+}
+
+.reg-done-lead {
+  margin: 0 0 8px;
+  color: var(--register-ink) !important;
+  font-size: 17px;
+  font-weight: 650;
+  line-height: 1.45
+}
+
+.reg-done .btn {
+  margin-top: 22px;
+  border-radius: 12px
 }
 
 @media(max-width:900px) {
@@ -557,6 +761,14 @@
   .registration-orbit {
     right: 10%;
     bottom: 15%
+  }
+
+  .reg-radio-group {
+    grid-template-columns: 1fr
+  }
+
+  .reg-foot .btn {
+    flex: 1 1 auto
   }
 }
 
@@ -630,15 +842,16 @@
   }
 }
 
-@media(min-width:701px) and (max-width:850px) {
-  .registration-options {
-    grid-template-columns: 1fr
-  }
-}
-
 @media(prefers-reduced-motion:reduce) {
+
   .registration-option,
-  .registration-option-arrow {
+  .registration-option-arrow,
+  .reg-role,
+  .reg-role-arrow,
+  .reg-chip,
+  .reg-chip::before,
+  .reg-radio-option,
+  .reg-icon {
     transition: none
   }
 }

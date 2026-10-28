@@ -4,7 +4,7 @@ import com.remosens.geospatials.enums.Technology;
 
 import java.util.Set;
 
-/** Fields common to the learner, expert and partner requests. */
+/** Fields common to the learner, expert, partner and organisation requests. */
 public interface RegistrationRequest {
 
     String fullName();

@@ -261,9 +261,13 @@
   roleDefs.organisation = {
     label: "Organisation",
     summary:
-      "Submit an institution registration application.",
-    title: "GEOSPATIALS Institution Registration Application",
-    preview: true,
+      "College, university or institute partnering with GEOSPATIALS.",
+    endpoint: "organisations",
+    title: "Institution registration application",
+    sub: "Share a few details about your institution and our team will review the application.",
+    submitLabel: "Submit application",
+    successTitle: "Application received",
+    successCopy: "Our team will review your institution application and get in touch shortly.",
     groups: [
       [
         "Section A — Institution details",
@@ -285,7 +289,7 @@
             ],
           ],
           ["officialWebsite", "Official website", "url", 0],
-          ["officialEmail", "Official email", "email", 1],
+          ["email", "Official email", "email", 1],
         ],
       ],
       [
@@ -299,7 +303,7 @@
       [
         "Section C — Authorised representative",
         [
-          ["representative", "Representative", "text", 1],
+          ["fullName", "Authorised representative", "text", 1],
           [
             "designation",
             "Designation",
@@ -389,14 +393,16 @@
       '<div class="reg-roles">' +
       Object.entries(roleDefs)
         .map(
-          ([k, r]) =>
-            '<button class="reg-role" data-choose="' +
+          ([k, r], i) =>
+            '<button class="reg-role" type="button" data-choose="' +
             k +
-            '"><span><strong>' +
+            '"><span class="reg-role-badge" aria-hidden="true">' +
+            String(i + 1).padStart(2, "0") +
+            '</span><span class="reg-role-copy"><strong>' +
             r.label +
             "</strong><small>" +
             r.summary +
-            '</small></span><span aria-hidden="true">›</span></button>',
+            '</small></span><span class="reg-role-arrow" aria-hidden="true">→</span></button>',
         )
         .join("") +
       "</div>";
@@ -406,16 +412,33 @@
     let r = roleDefs[key];
     title.textContent = r.title;
     sub.textContent =
-      "Takes about a minute. We will contact you before launch.";
+      r.sub || "Takes about a minute. We will contact you before launch.";
     foot.hidden = false;
     foot.innerHTML =
       '<button class="btn o sm reg-back" type="button" id="reg-back">← Back</button><button class="btn sm" type="submit" form="role-form" id="reg-submit">' +
-      (r.preview ? "Copy application details" : "Submit") +
+      (r.submitLabel || "Submit") +
       "</button>";
-    let html =
-      '<form id="role-form" novalidate' +
-      (r.preview ? ' data-preview="true"' : "") +
-      '><div id="reg-form-error"></div>';
+    let html = '<form id="role-form" novalidate><div id="reg-form-error"></div>';
+    // Fields that should span the full form width for this role.
+    let fullWidth = new Set([
+      "institution",
+      "fieldOfStudy",
+      "bio",
+      "portfolioUrl",
+      "technologies",
+      "teachingFormats",
+      "sectors",
+      "opportunityTypes",
+      "hiringNeeds",
+    ]);
+    if (key === "organisation")
+      [
+        "institutionType",
+        "officialWebsite",
+        "designation",
+        "collaborationInterests",
+        "description",
+      ].forEach((n) => fullWidth.add(n));
     r.groups.forEach((g, gi) => {
       html +=
         '<section class="reg-group"><h3>' +
@@ -423,19 +446,7 @@
         '</h3><div class="reg-grid">';
       g[1].forEach((f) => {
         let [name, label, type, required, options] = f,
-          full = r.preview
-            ? true
-            : [
-                "institution",
-                "fieldOfStudy",
-                "bio",
-                "portfolioUrl",
-                "technologies",
-                "teachingFormats",
-                "sectors",
-                "opportunityTypes",
-                "hiringNeeds",
-              ].includes(name);
+          full = fullWidth.has(name);
         html +=
           '<div class="reg-field ' +
           (full ? "reg-full" : "") +
@@ -458,19 +469,7 @@
             opts
               .map((o) => {
                 let [v, l] = o.split("|");
-                let selected =
-                  key === "organisation" &&
-                  name === "organisationType" &&
-                  v === "ACADEMIC_INSTITUTION";
-                return (
-                  '<option value="' +
-                  v +
-                  '"' +
-                  (selected ? " selected" : "") +
-                  ">" +
-                  l +
-                  "</option>"
-                );
+                return '<option value="' + v + '">' + l + "</option>";
               })
               .join("") +
             "</select>";
@@ -480,20 +479,15 @@
             label +
             '">' +
             (options || [])
-              .map((o, index) => {
+              .map((o) => {
                 let [v, l] = o.split("|");
-                let selected =
-                  (name === "institutionType" && v === "UNIVERSITY") ||
-                  (name === "designation" &&
-                    v === "PLACEMENT_TRAINING_OFFICER");
                 return (
                   '<label class="reg-radio-option"><input type="radio" name="' +
                   name +
                   '" value="' +
                   v +
                   '"' +
-                  (required && index === 0 ? " required" : "") +
-                  (selected ? " checked" : "") +
+                  (required ? " required" : "") +
                   '><span>' +
                   l +
                   "</span></label>"
@@ -510,18 +504,10 @@
             opts
               .map((o) => {
                 let [v, l] = o.split("|");
-                let selected =
-                  name === "collaborationInterests" &&
-                  [
-                    "INDUSTRIAL_TRAINING",
-                    "INTERNSHIPS_CAREER_OPPORTUNITIES",
-                  ].includes(v);
                 return (
                   '<button type="button" class="reg-chip" data-value="' +
                   v +
-                  '" aria-pressed="' +
-                  selected +
-                  '">' +
+                  '" aria-pressed="false">' +
                   l +
                   "</button>"
                 );
@@ -531,11 +517,7 @@
             name +
             '" ' +
             (required ? "required" : "") +
-            ' value="' +
-            (name === "collaborationInterests"
-              ? "INDUSTRIAL_TRAINING,INTERNSHIPS_CAREER_OPPORTUNITIES"
-              : "") +
-            '">';
+            ' value="">';
         } else if (type === "textarea")
           html +=
             '<textarea id="rf-' +
@@ -566,9 +548,8 @@
       });
       html += "</div></section>";
     });
-    html += r.preview
-      ? '<p class="reg-preview-note">This is a form preview, not a live registration submission. Copying the details does not register the institution or send data to GEOSPATIALS.</p></form>'
-      : '<section class="reg-group"><h3>Stay in the loop</h3><label class="reg-check"><input type="checkbox" name="notifyOnLaunch" checked><span>Notify me when GEOSPATIALS launches.</span></label><label class="reg-check"><input type="checkbox" name="consentToContact" required><span>I agree to be contacted by Remosens Private Limited about GEOSPATIALS launch updates and early access. <b style="color:#f0c95c">Required</b></span></label></section></form>';
+    html +=
+      '<section class="reg-group"><h3>Stay in the loop</h3><label class="reg-check"><input type="checkbox" name="notifyOnLaunch" checked><span>Notify me when GEOSPATIALS launches.</span></label><label class="reg-check"><input type="checkbox" name="consentToContact" required><span>I agree to be contacted by Remosens Private Limited about GEOSPATIALS launch updates and early access. <b class="reg-required-tag">Required</b></span></label></section></form>';
     body.innerHTML = html;
   }
   body.addEventListener("click", (e) => {
@@ -590,6 +571,10 @@
         .join(",");
       return;
     }
+  });
+  // The back button lives in the footer, outside the form body, so it needs
+  // its own listener — clicks there never bubble up to the body handler.
+  foot.addEventListener("click", (e) => {
     if (e.target.closest("#reg-back")) renderChoices();
   });
   body.addEventListener("submit", async (e) => {
@@ -614,7 +599,10 @@
       if (missingChip) {
         err.innerHTML =
           '<div class="reg-banner">Please choose at least one option for ' +
-          missingChip.dataset.chipGroup.replace(/([A-Z])/g, " $1") +
+          missingChip.dataset.chipGroup
+            .replace(/([A-Z])/g, " $1")
+            .trim()
+            .toLowerCase() +
           ".</div>";
         missingChip.scrollIntoView({
           block: "center",
@@ -624,61 +612,6 @@
         invalid.focus();
         err.innerHTML =
           '<div class="reg-banner">Please complete the required fields and check your consent.</div>';
-      }
-      return;
-    }
-    if (r.preview) {
-      const labels = new Map();
-      form.querySelectorAll("label[for]").forEach((fieldLabel) => {
-        labels.set(
-          fieldLabel.htmlFor.replace(/^rf-/, ""),
-          fieldLabel.textContent.replace(/\s*\*$/, ""),
-        );
-      });
-      const details = [...new FormData(form).entries()]
-        .filter(([, value]) => value !== "")
-        .map(([name, value]) => {
-          const fieldLabel = labels.get(name) || name;
-          if (name === "collaborationInterests") {
-            value = String(value)
-              .split(",")
-              .map((selectedValue) =>
-                form.querySelector(
-                  '[data-chip-group="collaborationInterests"] [data-value="' +
-                    selectedValue +
-                    '"]',
-                )?.textContent,
-              )
-              .filter(Boolean)
-              .join(", ");
-          } else {
-            const selectedRadio = form.querySelector(
-              'input[type="radio"][name="' + name + '"]:checked',
-            );
-            if (selectedRadio) {
-              value = selectedRadio.nextElementSibling?.textContent || value;
-            }
-          }
-          return fieldLabel + ": " + value;
-        })
-        .join("\n");
-      submit.disabled = true;
-      submit.textContent = "Copying…";
-      try {
-        await navigator.clipboard.writeText(
-          "GEOSPATIALS INSTITUTION REGISTRATION APPLICATION\n" + details,
-        );
-        title.textContent = "Application details copied";
-        sub.textContent =
-          "This is a form preview, not a live registration submission.";
-        body.innerHTML =
-          '<div class="reg-done"><span class="done-check">✓</span><p>Application details copied to your clipboard.</p><p>Copying does not register the institution or send data to GEOSPATIALS.</p><button class="btn sm" id="reg-done-close" style="margin-top:24px">Done</button></div>';
-        foot.hidden = true;
-      } catch (error) {
-        err.innerHTML =
-          '<div class="reg-banner">Could not copy application details. Please allow clipboard access and try again.</div>';
-        submit.disabled = false;
-        submit.textContent = "Copy application details";
       }
       return;
     }
@@ -695,6 +628,7 @@
             "sectors",
             "teachingFormats",
             "opportunityTypes",
+            "collaborationInterests",
           ].includes(k)
         )
           payload[k] = String(v).split(",").filter(Boolean);
@@ -724,12 +658,17 @@
           "Something went wrong while saving your details. Try again in a moment.";
         throw new Error(message);
       }
-      title.textContent = "You are on the list";
+      title.textContent = r.successTitle || "You are on the list";
       sub.textContent = "Registration submitted successfully.";
       body.innerHTML =
-        '<div class="reg-done"><span class="done-check">✓</span><p style="font-size:18px;font-weight:600;color:#f1f5f9;margin-bottom:8px">' +
+        '<div class="reg-done"><span class="done-check">✓</span><p class="reg-done-lead">' +
         esc(result?.message || "Thanks for registering your interest.") +
-        '</p><p>We will contact you with GEOSPATIALS launch updates and early access.</p><button class="btn sm" id="reg-done-close" style="margin-top:24px">Done</button></div>';
+        "</p><p>" +
+        esc(
+          r.successCopy ||
+            "We will contact you with GEOSPATIALS launch updates and early access.",
+        ) +
+        '</p><button class="btn sm" id="reg-done-close">Done</button></div>';
       foot.hidden = true;
     } catch (error) {
       err.innerHTML =
@@ -740,7 +679,7 @@
         ) +
         "</div>";
       submit.disabled = false;
-      submit.textContent = r.title + " ↗";
+      submit.textContent = r.submitLabel || "Submit";
     }
   });
   close.addEventListener("click", shut);

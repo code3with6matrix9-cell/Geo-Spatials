@@ -2,10 +2,12 @@ package com.remosens.geospatials.controller;
 
 import com.remosens.geospatials.dto.ExpertRegistrationRequest;
 import com.remosens.geospatials.dto.LearnerRegistrationRequest;
+import com.remosens.geospatials.dto.OrganisationRegistrationRequest;
 import com.remosens.geospatials.dto.PartnerRegistrationRequest;
 import com.remosens.geospatials.dto.RegistrationResponse;
 import com.remosens.geospatials.service.ExpertRegistrationService;
 import com.remosens.geospatials.service.LearnerRegistrationService;
+import com.remosens.geospatials.service.OrganisationRegistrationService;
 import com.remosens.geospatials.service.PartnerRegistrationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ public class RegistrationController {
     private final LearnerRegistrationService learnerService;
     private final ExpertRegistrationService expertService;
     private final PartnerRegistrationService partnerService;
+    private final OrganisationRegistrationService organisationService;
 
     @PostMapping("/learners")
     @ResponseStatus(HttpStatus.CREATED)
@@ -41,5 +44,11 @@ public class RegistrationController {
     @ResponseStatus(HttpStatus.CREATED)
     public RegistrationResponse registerPartner(@Valid @RequestBody PartnerRegistrationRequest request) {
         return partnerService.register(request);
+    }
+
+    @PostMapping("/organisations")
+    @ResponseStatus(HttpStatus.CREATED)
+    public RegistrationResponse registerOrganisation(@Valid @RequestBody OrganisationRegistrationRequest request) {
+        return organisationService.register(request);
     }
 }

@@ -1,0 +1,13 @@
+package com.remosens.geospatials.enums;
+
+/** Ways an institution wants to collaborate with GEOSPATIALS. */
+public enum CollaborationInterest {
+    INDUSTRIAL_TRAINING,
+    WORKSHOPS_WEBINARS,
+    INTERNSHIPS_CAREER_OPPORTUNITIES,
+    INDUSTRY_ACADEMIA_COLLABORATION,
+    GIS_REMOTE_SENSING_LAB,
+    RESEARCH_PROJECT_COLLABORATION,
+    FACULTY_DEVELOPMENT_UPSKILLING,
+    STUDENT_REGISTRATION_RESOURCES
+}

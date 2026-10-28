@@ -3,7 +3,6 @@ import legacyMarkup from "./legacyMarkup.html?raw";
 import "./style.css";
 import "./institutionPackage.css";
 import "./partnerSection.css";
-import "./hisar.css";
 import "./registrationSection.css";
 
 const API_BASE_URL = (

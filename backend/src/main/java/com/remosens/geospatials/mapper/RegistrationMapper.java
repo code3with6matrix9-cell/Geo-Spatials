@@ -2,12 +2,14 @@ package com.remosens.geospatials.mapper;
 
 import com.remosens.geospatials.dto.ExpertRegistrationRequest;
 import com.remosens.geospatials.dto.LearnerRegistrationRequest;
+import com.remosens.geospatials.dto.OrganisationRegistrationRequest;
 import com.remosens.geospatials.dto.PartnerRegistrationRequest;
 import com.remosens.geospatials.dto.RegistrationRequest;
 import com.remosens.geospatials.dto.RegistrationResponse;
 import com.remosens.geospatials.entity.BaseRegistration;
 import com.remosens.geospatials.entity.Expert;
 import com.remosens.geospatials.entity.Learner;
+import com.remosens.geospatials.entity.Organisation;
 import com.remosens.geospatials.entity.Partner;
 import com.remosens.geospatials.enums.RegistrantRole;
 
@@ -63,13 +65,32 @@ public final class RegistrationMapper {
         return e;
     }
 
+    public static Organisation toEntity(OrganisationRegistrationRequest r) {
+        Organisation e = new Organisation();
+        applyCommon(e, r);
+        e.setInstitutionName(r.institutionName().trim());
+        e.setInstitutionType(r.institutionType());
+        e.setOfficialWebsite(clean(r.officialWebsite()));
+        e.setDesignation(r.designation());
+        e.setCollaborationInterests(new TreeSet<>(r.collaborationInterests()));
+        e.setDescription(clean(r.description()));
+        return e;
+    }
+
     public static RegistrationResponse toResponse(BaseRegistration e, RegistrantRole role) {
-        StringBuilder message = new StringBuilder("You are on the early access list as ")
-                .append(role == RegistrantRole.EXPERT ? "an " : "a ")
-                .append(role.label())
-                .append(". We will contact you before launch.");
-        if (e.isNotifyOnLaunch()) {
-            message.append(" We will also let you know the day GEOSPATIALS goes live.");
+        StringBuilder message;
+        if (role == RegistrantRole.ORGANISATION) {
+            message = new StringBuilder("Your institution registration has been received. ")
+                    .append("Our team will review the application and get in touch shortly.");
+        } else {
+            message = new StringBuilder("You are on the early access list as ")
+                    .append(role.article())
+                    .append(" ")
+                    .append(role.label())
+                    .append(". We will contact you before launch.");
+            if (e.isNotifyOnLaunch()) {
+                message.append(" We will also let you know the day GEOSPATIALS goes live.");
+            }
         }
         return new RegistrationResponse(
                 e.getId(),
@@ -88,7 +109,9 @@ public final class RegistrationMapper {
         target.setCity(r.city().trim());
         target.setState(clean(r.state()));
         target.setCountry(r.country().trim());
-        target.setTechnologies(new TreeSet<>(r.technologies()));
+        // The institution form does not collect a tech stack, so technologies may be absent.
+        target.setTechnologies(
+                r.technologies() == null ? new TreeSet<>() : new TreeSet<>(r.technologies()));
         target.setConsentToContact(Boolean.TRUE.equals(r.consentToContact()));
         target.setNotifyOnLaunch(Boolean.TRUE.equals(r.notifyOnLaunch()));
     }

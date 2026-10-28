@@ -9,7 +9,7 @@ public class DuplicateRegistrationException extends RuntimeException {
     private final RegistrantRole role;
 
     public DuplicateRegistrationException(RegistrantRole role, String email) {
-        super("This email is already registered as " + (role == RegistrantRole.EXPERT ? "an " : "a ")
+        super("This email is already registered as " + role.article() + " "
                 + role.label() + ". Use a different email or wait for our launch message.");
         this.role = role;
     }
