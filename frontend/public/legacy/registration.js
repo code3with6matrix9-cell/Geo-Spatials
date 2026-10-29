@@ -639,25 +639,33 @@
     payload.consentToContact = form.elements.consentToContact.checked;
     submit.disabled = true;
     submit.textContent = "Registering…";
+    let requestUrl = API_BASE + "/api/v1/registrations/" + r.endpoint;
     try {
-      let response = await fetch(
-        API_BASE + "/api/v1/registrations/" + r.endpoint,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify(payload),
+      let response = await fetch(requestUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
         },
-      );
+        body: JSON.stringify(payload),
+      });
       let result = await response.json().catch(() => null);
       if (!response.ok) {
+        console.error("[registration] Server rejected the submission", {
+          url: requestUrl,
+          status: response.status,
+          message: result?.message || null,
+          fieldErrors: result?.fieldErrors || null,
+        });
         let message =
           result?.message ||
           "Something went wrong while saving your details. Try again in a moment.";
         throw new Error(message);
       }
+      console.info("[registration] Submission accepted", {
+        url: requestUrl,
+        role: selectedRole,
+      });
       title.textContent = r.successTitle || "You are on the list";
       sub.textContent = "Registration submitted successfully.";
       body.innerHTML =
@@ -671,11 +679,23 @@
         '</p><button class="btn sm" id="reg-done-close">Done</button></div>';
       foot.hidden = true;
     } catch (error) {
+      // TypeError from fetch means the request never completed (offline, DNS,
+      // or a blocked CORS preflight). The browser cannot tell those apart, so
+      // correlate with the Network tab and the backend logs.
+      let isNetworkError = error instanceof TypeError;
+      console.error(
+        "[registration] Submission failed" +
+          (isNetworkError
+            ? " before receiving a response (network or CORS issue — check the Network tab and backend logs)"
+            : ""),
+        { url: requestUrl, role: selectedRole, error },
+      );
       err.innerHTML =
         '<div class="reg-banner">' +
         esc(
-          error.message ||
-          "We could not reach the server. Check your connection and try again.",
+          error && !isNetworkError && error.message
+            ? error.message
+            : "We could not reach the server. Check your connection and try again.",
         ) +
         "</div>";
       submit.disabled = false;
