@@ -5,6 +5,7 @@ import StorageImage from "../components/StorageImage.jsx";
 import Lightbox from "../components/Lightbox.jsx";
 import StateBlock from "../components/StateBlock.jsx";
 import {
+  clearStorageCache,
   getEventBySlug,
   getEventMedia,
   getMediaCandidates,
@@ -104,7 +105,12 @@ export default function EventGalleryPage({ slug }) {
     }
   }, [status, title]);
 
-  const retry = () => setReloadKey((value) => value + 1);
+  const retry = () => {
+    // A retry must really retry: drop memoised listings, traversals and any
+    // paused signing state so a fixed policy takes effect immediately.
+    clearStorageCache();
+    setReloadKey((value) => value + 1);
+  };
   const images = media ? media.images : [];
 
   return (
@@ -194,6 +200,14 @@ export default function EventGalleryPage({ slug }) {
 
           {status === "ready" && images.length > 0 && (
             <>
+              {images.every((image) => !image.urls || image.urls.length === 0) && (
+                <p className="g-note" role="status">
+                  The photos in this event exist, but Storage access is currently
+                  restricted, so they cannot be signed for display. Site
+                  administrators: apply the Gallery SELECT policy described in the
+                  README, then use Try again.
+                </p>
+              )}
               <div className="g-shots">
                 {images.map((image, index) => (
                   <button

@@ -4,6 +4,7 @@ import SiteFooter from "../components/SiteFooter.jsx";
 import StorageImage, { ImagePlaceholder } from "../components/StorageImage.jsx";
 import StateBlock from "../components/StateBlock.jsx";
 import {
+  clearStorageCache,
   getEventSummary,
   getMediaCandidates,
   isConfigured,
@@ -107,7 +108,12 @@ export default function GalleryPage() {
     };
   }, [status, folders]);
 
-  const retry = () => setReloadKey((value) => value + 1);
+  const retry = () => {
+    // Drop memoised listings/results first — otherwise "Refresh" would replay
+    // a cached empty listing instead of asking Storage again.
+    clearStorageCache();
+    setReloadKey((value) => value + 1);
+  };
 
   return (
     <>

@@ -56,9 +56,14 @@ Slugs are derived from folder names, e.g. `Delhi Government Workshop` →
 - Only raster images are shown (`jpg jpeg png webp gif avif bmp jfif`); SVG is
   deliberately excluded for safety. PDFs and other documents are counted but not
   rendered.
-- Grid thumbnails use Supabase's image-render endpoint (one tiny probe decides if
-  transformations are enabled); the lightbox loads the original. Private buckets
-  automatically switch to time-limited signed URLs.
+- **Private bucket (this project's case): `docs`, `public = false`** — every grid
+  thumbnail and lightbox image is served through a **time-limited signed URL**
+  generated on the fly. The app never uses `/object/public/...` or the public
+  image-render endpoint, because neither can serve a private bucket. Signing
+  runs as the caller, so the same `SELECT` policy below authorizes both listing
+  and signing.
+- Public buckets still work if you ever switch: signed URLs are valid for public
+  objects too, so the code path is unchanged.
 
 ### Environment variables
 
@@ -80,21 +85,17 @@ bundle.
 
 ### Supabase configuration (manual steps)
 
-1. In **Storage**, open the bucket (default `docs`) and note whether it is
-   **Public** or **Private**.
-   - **Public bucket** — object *downloads* and image *transforms* are served by
-     Storage's super-user path (`/object/public/...`,
-     `/render/image/public/...`) and need **no RLS policy at all**. Only
-     **listing** needs a policy.
-   - **Private bucket** — the Gallery signs URLs on the fly; signing runs as the
-     caller, so the same `SELECT` policy below covers it too.
+1. In **Storage**, open the bucket (default `docs`). For this project it stays
+   **Private** (`public = false`) — do not make it public and do not create a new
+   bucket. The Gallery reads it through **signed URLs**, which work for a private
+   bucket and require no public access.
 2. The only policy the Gallery needs is `SELECT` on `storage.objects`, scoped to
-   this bucket. **No `storage.buckets` policy is required**: listing never reads
-   the buckets table, public downloads bypass RLS, and the Gallery's
-   `GET /bucket/:id` probe treats a failure as "assume public" and falls back to
-   signed URLs. Recommended (also hides the `docs/` plumbing folder and
-   root-level files from anon, mirroring the app's denylist at the policy
-   layer):
+   this bucket. **No `storage.buckets` policy is required and none is created**:
+   the app was changed to avoid the `GET /bucket/:id` metadata request entirely,
+   so a buckets policy is unnecessary. Listing and signing are both authorized by
+   the single `SELECT` policy below (signing runs as the caller). It also hides
+   the `docs/` plumbing folder and root-level files from anon, mirroring the
+   app's denylist at the policy layer:
    ```sql
    create policy "Gallery: anon may list and read event folders"
    on storage.objects for select
@@ -112,7 +113,7 @@ bundle.
    cannot stop direct public-URL downloads of any object — genuinely sensitive
    files belong in a separate private bucket, not in `docs`.
 3. Keep event photos inside per-event folders. Root-level files are ignored by
-   design.
+   design and are never exposed by the recommended policy.
 
 ### Verify the integration against the live bucket
 
@@ -123,9 +124,21 @@ VITE_SUPABASE_ANON_KEY=... npm run verify:storage
 This runs `scripts/verifyStorage.mjs` through the same Vite build the app uses,
 so it exercises the real service code. It checks folder discovery, the `docs`
 denylist, root-file exclusion, slug and path encoding (space handling, no
-double-encoding), per-event image counts, nested traversal, cover selection and
-that the generated image URLs actually resolve (HTTP 200/206). Exit code is
-non-zero if any check fails.
+double-encoding), per-event image counts, nested traversal and cover selection.
+**Section 6** then signs a real discovered object and actually retrieves it, to
+prove signed-URL generation (category 6) and genuine image delivery (category 7)
+— a signed URL is never counted as working on HTTP 200 alone. Image checks
+follow the browser's real chain — candidates in order, then one fresh signature —
+and report which route loaded each file. Section 2d probes listing vs image
+access independently (event-folder listing, public/credentialed/transform/signed
+URL, each with a bogus-id control); set `VERIFY_EVENT_PREFIX` to override the
+folder name used there. The final **Outcome classification** block maps the run
+to the nine cases (network/auth failure; RLS-filtered empty listing; listing OK
+but no folders; folder discovery; image discovery; signed-URL generation; image
+retrieval; expired/unauthorized signed URL; unsupported transformations). If no
+real object is discoverable, image delivery is reported as **UNVERIFIED**, never
+as a pass. Signed URLs embed a bearer token, so they are redacted in all output.
+Exit code is non-zero if any check fails.
 
 ### Troubleshooting: verification reports 0 event folders
 
@@ -139,7 +152,19 @@ result:
   the real bucket from one that cannot exist, i.e. the anon role sees no rows
   in `storage.buckets`/`storage.objects`. This is the missing-SELECT-policy
   case above, **not** a parsing bug and **not** proof the bucket id is wrong.
-  Fix: add the two policies above (Storage → Policies).
+  Fix: add the `storage.objects` policy above (Storage → Policies).
+- **Section 2d: public image URL says "Bucket not found" but the credentialed
+  URL says "Object not found"** — the bucket id is correct and the bucket is
+  **private**. Expected: `/object/public/...` and `/render/image/public/...`
+  only ever serve buckets flagged public (super-user + `isPublic: true`; no
+  policy changes that), so they cannot serve `docs`. The Gallery already loads
+  every image via signed URLs, so once the `SELECT` policy exists, verification
+  section 6 reports a signed URL that `serves real image bytes`. Thumbnails are
+  signed originals (no public transform route) while the bucket stays private.
+- **No `storage.buckets` policy needed** — the Gallery no longer issues a
+  `GET /bucket/:id` visibility request at all, so there is nothing to grant. If
+  an old buckets policy exists it is harmless but unused. Every image is signed
+  from the first request.
 - **Storage rejects even the configured key** — the key in
   `VITE_SUPABASE_ANON_KEY` is wrong or from another project; copy the current
   project's publishable key from Project Settings → API.

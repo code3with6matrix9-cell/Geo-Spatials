@@ -8,6 +8,12 @@
  *   path is encoded per-segment and never as a single blob, and never twice.
  * - Folder listings, folder traversals and signed URLs are memoised so the
  *   landing page and the event page share one round of requests.
+ * - The `docs` bucket is private: every image and the lightbox are served
+ *   through time-limited signed URLs. The app never uses
+ *   `/object/public/...` or the public image-render endpoint — neither can
+ *   serve a private bucket — and it never reads bucket metadata. Signing
+ *   runs as the caller, so listing and signing are both authorised by the
+ *   same SELECT policy.
  * - Traversal is bounded (depth + file cap + visited set) so it can never loop
  *   forever or hammer the API.
  *
@@ -75,9 +81,17 @@ const LIST_PAGE_SIZE = 100;
 const MAX_LISTED_ENTRIES = 2000;
 const MAX_TRAVERSE_DEPTH = 4;
 const MAX_IMAGES_PER_EVENT = 500;
-const THUMB_WIDTH = 900;
-const THUMB_QUALITY = 72;
+// Signed URLs arrive with one hour of validity; the cache keeps them for 45
+// minutes so a URL in use is always re-requested well before it can expire.
 const SIGNED_URL_TTL_MS = 45 * 60 * 1000;
+const SIGNED_URL_EXPIRES_S = 3600;
+// After a signing failure, retries for the same path pause briefly so a broken
+// policy cannot trigger one Storage request per rendered image.
+const SIGN_FAILURE_TTL_MS = 8 * 1000;
+// The batch sign endpoint accepts up to 1000 paths per request; sign in chunks
+// of 100 with a few chunks in flight so a 500-image event needs ~5 requests.
+const SIGN_BATCH_SIZE = 100;
+const SIGN_BATCH_CONCURRENCY = 3;
 
 export class StorageError extends Error {
   constructor(message, { status, code, cause } = {}) {
@@ -381,22 +395,21 @@ export async function getEventSummary(folderPath, options = {}) {
   };
 }
 
-/** Every image belonging to one event folder, including nested folders. */
+/** Every image belonging to one event folder, including nested folders.
+ *  Also warms the signed-URL cache in batches so the grid does not issue one
+ *  signing request per image (best effort — failures degrade to lazy signing). */
 export async function getEventMedia(folderPath, options = {}) {
   const collected = await collectFolder(folderPath, options);
+  await primeSignedUrls(collected.images.map((image) => image.path)).catch(() => {});
   return collected;
 }
 
 /* ------------------------------------------------------------------ *
- * Object URLs (public, transform, signed)
+ * Object URLs — signed only (`docs` is a private bucket)
  * ------------------------------------------------------------------ */
 
 function publicObjectUrl(path) {
   return `${SUPABASE_URL}/storage/v1/object/public/${encodeStoragePath(BUCKET)}/${encodeStoragePath(path)}`;
-}
-
-function publicRenderUrl(path, width = THUMB_WIDTH) {
-  return `${SUPABASE_URL}/storage/v1/render/image/public/${encodeStoragePath(BUCKET)}/${encodeStoragePath(path)}?width=${width}&quality=${THUMB_QUALITY}`;
 }
 
 function signedObjectUrl(signedPath) {
@@ -404,101 +417,148 @@ function signedObjectUrl(signedPath) {
   return `${SUPABASE_URL}/storage/v1${suffix}`;
 }
 
-let visibilityPromise = null;
-
-/** `public` buckets can be read with plain URLs; `private` buckets need signed
- *  URLs. Resolved once per session and reused by every image on the page. */
-async function getBucketVisibility() {
-  if (!visibilityPromise) {
-    visibilityPromise = (async () => {
-      try {
-        const response = await storageFetch(`bucket/${encodeStoragePath(BUCKET)}`);
-        const info = await response.json();
-        return info?.public ? "public" : "private";
-      } catch (error) {
-        if (error instanceof StorageError && error.code === "not-configured") throw error;
-        // Older deployments may hide bucket metadata from the anon key: assume
-        // public and let the per-image fallback sign the object if needed.
-        return "public";
-      }
-    })();
-  }
-  return visibilityPromise;
-}
-
+/* Signed-URL cache: entries move from `pending` (in-flight, shared by every
+ * caller) to a settled `{url, at}` reused until SIGNED_URL_TTL_MS passes.
+ * Failures are never cached as results — only as a short pause marker. */
 const signedCache = new Map();
+const signFailures = new Map();
 
-/** Returns a time-limited signed URL, or null when signing is not allowed. */
-export async function getSignedUrl(path) {
-  const cached = signedCache.get(path);
-  if (cached && Date.now() - cached.at < SIGNED_URL_TTL_MS) return cached.url;
-
-  try {
-    const response = await storageFetch(`object/sign/${encodeStoragePath(BUCKET)}`, {
-      method: "POST",
-      body: { expiresIn: 3600, paths: [path] },
-    });
-    const payload = await response.json();
-    const entry = Array.isArray(payload) ? payload[0] : payload;
-    const signedPath = entry?.signedURL || entry?.signedUrl;
-    if (!signedPath) return null;
-    const url = signedObjectUrl(signedPath);
-    signedCache.set(path, { url, at: Date.now() });
-    return url;
-  } catch {
-    return null;
+async function requestSignedUrl(path) {
+  const response = await storageFetch(`object/sign/${encodeStoragePath(BUCKET)}`, {
+    method: "POST",
+    body: { expiresIn: SIGNED_URL_EXPIRES_S, paths: [path] },
+  });
+  const payload = await response.json();
+  const entry = Array.isArray(payload) ? payload[0] : payload;
+  const signedPath = entry?.signedURL || entry?.signedUrl;
+  if (!signedPath) {
+    throw new StorageError(
+      (entry && entry.error) || "Supabase Storage did not return a signed URL.",
+      { code: "sign-failed" },
+    );
   }
-}
-
-let transformProbe = null;
-
-/** Image transformation may be disabled on the project; probe once with a tiny
- *  render so the grid does not issue a failing request for every thumbnail. */
-async function transformsSupported(probePath) {
-  if (!transformProbe) {
-    transformProbe = (async () => {
-      try {
-        const response = await fetch(publicRenderUrl(probePath, 16), {
-          headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
-          signal: AbortSignal.timeout(15000),
-        });
-        return response.ok;
-      } catch {
-        // Network hiccup: prefer thumbnails and fall back per image.
-        return true;
-      }
-    })();
-  }
-  return transformProbe;
+  return signedObjectUrl(signedPath);
 }
 
 /**
- * Ordered list of URLs to try for one stored file.
- * [0] is the cheap thumbnail (public buckets with transforms enabled),
- * [1] the original object. Private buckets get a signed original.
+ * A time-limited signed URL for one object, or null when signing is not
+ * permitted (the image component then shows its fallback instead of a broken
+ * image). In-flight requests are shared, settled URLs are reused until they
+ * near expiry, failures pause retries for a few seconds, and `force` always
+ * asks the API for a fresh signature — used after a displayed URL stops
+ * working (expired or revoked), never for plain renders.
  */
-export async function getMediaCandidates(path, { kind = "image" } = {}) {
-  const visibility = await getBucketVisibility();
+export function getSignedUrl(path, { force = false } = {}) {
+  if (!path) return Promise.resolve(null);
 
-  if (visibility === "private") {
-    const signed = await getSignedUrl(path);
-    return signed ? [signed] : [];
+  if (force) {
+    signedCache.delete(path);
+    signFailures.delete(path);
   }
 
-  if (kind !== "image") return [publicObjectUrl(path)];
+  const failedAt = signFailures.get(path);
+  if (failedAt !== undefined) {
+    if (Date.now() - failedAt < SIGN_FAILURE_TTL_MS) return Promise.resolve(null);
+    signFailures.delete(path);
+    signedCache.delete(path);
+  }
 
-  const supported = await transformsSupported(path);
-  const full = publicObjectUrl(path);
-  const thumb = publicRenderUrl(path);
-  return supported && thumb !== full ? [thumb, full] : [full];
+  const entry = signedCache.get(path);
+  if (entry) {
+    if (entry.pending) return entry.promise;
+    if (Date.now() - entry.at < SIGNED_URL_TTL_MS) return Promise.resolve(entry.url);
+    signedCache.delete(path); // nearing expiry → sign again below
+  }
+
+  const record = { pending: true, promise: null, url: null, at: 0 };
+  record.promise = requestSignedUrl(path)
+    .then((url) => {
+      record.pending = false;
+      record.url = url;
+      record.at = Date.now();
+      signFailures.delete(path);
+      return url;
+    })
+    .catch(() => {
+      signedCache.delete(path);
+      signFailures.set(path, Date.now());
+      return null;
+    });
+  signedCache.set(path, record);
+  return record.promise;
 }
 
-/** Last resort used when every candidate failed: the bucket was private after
- *  all (bucket metadata hidden), so sign the object now. */
-export async function getEmergencyCandidate(path) {
-  const visibility = await getBucketVisibility();
-  if (visibility === "private") return null;
-  return getSignedUrl(path);
+async function signBatch(paths) {
+  try {
+    const response = await storageFetch(`object/sign/${encodeStoragePath(BUCKET)}`, {
+      method: "POST",
+      body: { expiresIn: SIGNED_URL_EXPIRES_S, paths },
+    });
+    const payload = await response.json();
+    const items = Array.isArray(payload) ? payload : [];
+    const at = Date.now();
+    for (const item of items) {
+      const itemPath = item && item.path;
+      const signedPath = item && (item.signedURL || item.signedUrl);
+      if (!itemPath) continue;
+      if (signedPath) {
+        signedCache.set(itemPath, { pending: false, url: signedObjectUrl(signedPath), at });
+        signFailures.delete(itemPath);
+      } else {
+        signFailures.set(itemPath, at);
+      }
+    }
+  } catch {
+    // Storage unreachable or denied: pause the whole batch so the per-image
+    // path does not fire one doomed request per rendered image.
+    const at = Date.now();
+    for (const itemPath of paths) signFailures.set(itemPath, at);
+  }
+}
+
+/**
+ * Warms the cache for a whole event in chunked batch requests so a grid signs
+ * ~N/100 paths instead of one request per image. Never throws: failures leave
+ * those paths to the lazy per-image flow.
+ */
+async function primeSignedUrls(paths) {
+  const pending = [];
+  const seen = new Set();
+  for (const path of paths) {
+    if (!path || seen.has(path) || signedCache.has(path) || signFailures.has(path)) continue;
+    seen.add(path);
+    pending.push(path);
+  }
+
+  const batches = [];
+  for (let index = 0; index < pending.length; index += SIGN_BATCH_SIZE) {
+    batches.push(pending.slice(index, index + SIGN_BATCH_SIZE));
+  }
+  for (let index = 0; index < batches.length; index += SIGN_BATCH_CONCURRENCY) {
+    await Promise.all(
+      batches.slice(index, index + SIGN_BATCH_CONCURRENCY).map((batch) => signBatch(batch)),
+    );
+  }
+}
+
+/**
+ * Ordered list of URLs to try for one stored file. The bucket is private, so
+ * this is the signed original — the same URL serves the grid and the lightbox.
+ * An empty list means signing is currently not permitted; the image component
+ * renders its fallback rather than a broken image.
+ */
+export async function getMediaCandidates(path) {
+  const signed = await getSignedUrl(path);
+  return signed ? [signed] : [];
+}
+
+/**
+ * Last resort when a displayed candidate stops working (typically an expired
+ * signature): force a FRESH signature instead of retrying the same URL, so a
+ * stale link is replaced exactly once and the component never loops.
+ */
+export function getEmergencyCandidate(path) {
+  return getSignedUrl(path, { force: true });
 }
 
 /** Test/debug helper: build the public URL for a stored object. */
@@ -510,6 +570,5 @@ export function clearStorageCache() {
   listCache.clear();
   traversalCache.clear();
   signedCache.clear();
-  visibilityPromise = null;
-  transformProbe = null;
+  signFailures.clear();
 }

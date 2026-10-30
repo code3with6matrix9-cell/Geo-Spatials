@@ -21,9 +21,11 @@ export function ImagePlaceholder({ label = "Image unavailable", className, ...re
 }
 
 /**
- * Renders one stored file from an ordered list of candidate URLs: cheap
- * thumbnail first, original second, signed URL last. Falls back to a branded
- * placeholder instead of a broken image.
+ * Renders one stored file from an ordered list of candidate URLs (signed URLs
+ * for the private `docs` bucket). Falls back to a branded placeholder instead
+ * of a broken image, and asks the service for ONE fresh signature when a
+ * displayed URL stops working — retries are bounded, so a denied or expired
+ * URL can never loop.
  *
  * Give it a `key={path}` from the parent so candidate changes remount it.
  */
