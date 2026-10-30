@@ -2185,7 +2185,8 @@ nav .bar {
   --pk: #c08b32;
   --edge: rgba(24, 63, 92, .12);
   --f: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --h: "Plus Jakarta Sans", Inter, sans-serif
+  --h: "Plus Jakarta Sans", Inter, sans-serif;
+  --s: "Source Serif 4", Georgia, "Times New Roman", serif
 }
 
 body {
@@ -4145,3 +4146,35 @@ section {
 .rv::-webkit-scrollbar-corner {
   background: #0b111b;
 }
+
+/* ---- Testimonial pills + sliding panel (founder section) ---- */
+.vt{margin-top:clamp(28px,4vw,46px)}
+.vt-row{display:flex;flex-wrap:wrap;gap:12px}
+.vt-p{font:inherit;cursor:pointer;display:flex;align-items:center;gap:14px;padding:9px 20px 9px 9px;min-width:min(100%,290px);border-radius:999px;background:rgba(255,255,255,.07);border:1.5px solid rgba(159,217,234,.4);color:#b9cfdc;text-align:left;transition:border-color .3s,color .3s,background .3s}
+.vt-p img{width:52px;height:52px;border-radius:50%;object-fit:cover;flex:none}
+.vt-p b{display:block;font:600 17px/1.25 var(--h);color:inherit}
+.vt-p small{display:block;font:500 14px/1.3 var(--h);opacity:.85}
+.vt-p i{margin-left:auto;font-style:normal;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;border:1.5px solid currentColor;font-size:17px;line-height:1;transition:transform .5s}
+.vt-p:hover,.vt-p.on{border-color:#ffd58a;color:#fff}
+.vt-p.on{background:rgba(255,213,138,.1)}.vt-p.on i{transform:rotate(45deg)}
+.vt-p:focus-visible{outline:2px solid #ffd58a;outline-offset:3px}
+.vt-s{margin:14px 0 0;padding:26px clamp(20px,3vw,34px);border-radius:22px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-left:4px solid #7ff0ff}
+.vt-s.b{border-left-color:#ffd58a}
+.vt-s blockquote{margin:0;max-width:780px;font:italic 500 clamp(18px,2vw,23px)/1.5 var(--s);color:#fff}
+.vt-s blockquote::before{content:"\201C";display:block;font:600 60px/.6 var(--s);color:#7ff0ff;margin-bottom:8px}
+.vt-s.b blockquote::before{color:#ffd58a}
+.vt-s cite{display:block;margin-top:16px;font:500 14px/1.4 var(--h);font-style:normal;color:#9fd9ea}
+.vt-s cite b{color:#fff;font-weight:700}
+.js .vt-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .7s cubic-bezier(.65,0,.2,1)}
+.js .vt-panel.open{grid-template-rows:1fr}
+.js .vt-clip{overflow:hidden;min-height:0}
+.js .vt-slides{display:grid}
+.js .vt-s{grid-area:1/1;opacity:0;visibility:hidden;transform:translateX(70px);transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .5s,visibility 0s .7s}
+.js .vt-s[data-side="l"]{transform:translateX(-70px)}
+.js .vt-s.on{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+@media print{.js .vt-panel{grid-template-rows:1fr!important}.js .vt-s{grid-area:auto;opacity:1;visibility:visible;transform:none}}
+.vt-p{position:relative;overflow:hidden}
+.vt-p::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:100%;background:#ffd58a;transform:scaleX(0);transform-origin:left}
+.vt-p.run::after{animation:vtbar var(--d,8s) linear forwards}
+.vt.hold .vt-p.run::after{animation-play-state:paused}
+@keyframes vtbar{to{transform:scaleX(1)}}

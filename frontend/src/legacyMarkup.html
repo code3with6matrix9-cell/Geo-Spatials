@@ -14,7 +14,7 @@
           <a href="#about">About</a><a href="#info">Information</a>
           <a href="#tech">Technologies</a><a href="#who">Who can join</a>
           <a href="#package">Package</a><a href="#academia">Academia</a>
-          <a href="#contact">Contact</a>
+          <a href="#contact">Contact</a><a href="/gallery">Gallery</a>
         </div>
         <div style="display: flex; gap: 8px; align-items: center">
           <a class="btn sm" href="#register" data-open-register>Register ↗</a
@@ -105,7 +105,12 @@
           <div class="btns">
             <a class="btn" href="#register" data-open-register
               >Register your interest ↗</a
-            ><a class="btn o" href="#about">Explore the brochure ↓</a>
+            ><a
+              class="btn o"
+              href="/docs/geospatials_docs_pdf.pdf"
+              download="Geo-Spatials-Brochure.pdf"
+              >Explore the brochure ↓</a
+            >
           </div>
           <div class="bd">
             <span><b>✓</b> Verified certificates</span
@@ -770,6 +775,61 @@
               </a>
             </div>
           </div>
+          <div class="vt">
+            <div class="vt-row">
+              <button
+                type="button"
+                class="vt-p"
+                aria-expanded="false"
+                aria-controls="vt-panel"
+              >
+                <img src="/images/testi-chander-shekhar.jpg" alt="" />
+                <span><b>Dr. Chander Shekhar</b><small>Platform launch</small></span>
+                <i aria-hidden="true">+</i>
+              </button>
+              <button
+                type="button"
+                class="vt-p"
+                aria-expanded="false"
+                aria-controls="vt-panel"
+              >
+                <img src="/images/testi-prince-singh.jpg" alt="" />
+                <span><b>Prince Singh</b><small>Training feedback</small></span>
+                <i aria-hidden="true">+</i>
+              </button>
+            </div>
+            <div class="vt-panel" id="vt-panel" aria-live="polite">
+              <div class="vt-clip">
+                <div class="vt-slides">
+                  <figure class="vt-s" style="margin-bottom: 0">
+                    <blockquote>
+                      Launching GeoSPATIALS is a significant step towards
+                      bridging the gap between academia, industry, government,
+                      and geospatial innovation. The platform will help make
+                      geospatial knowledge more accessible, nurture skilled
+                      professionals, and promote data-driven solutions for
+                      sustainable development. It is a meaningful initiative
+                      aligned with the vision of Viksit Bharat 2047.
+                    </blockquote>
+                    <cite
+                      ><b>Dr. Chander Shekhar</b> &mdash; Director, Geospatial
+                      Centre, Hisar | Terra2Map</cite
+                    >
+                  </figure>
+                  <figure class="vt-s b" style="margin-bottom: 0">
+                    <blockquote>
+                      This training offers practical insights into GIS, GeoAI,
+                      and their applications in power utilities, including asset
+                      mapping and spatial analysis. It is highly recommended for
+                      students and professionals seeking industry-relevant
+                      geospatial skills.
+                    </blockquote>
+                    <cite><b>Prince Singh</b> &mdash; Feedback on the GIS &amp; GeoAI training</cite>
+                  </figure>
+                </div>
+              </div>
+            </div>
+          </div>
           <p class="fd-sig">
             Together, we turn learning into real-world impact. &mdash;
             <b>Vibhaw Kuntal</b>
@@ -777,45 +837,6 @@
         </div>
       </div>
     </section>
-
-    <div class="reg-backdrop" id="reg-modal" aria-hidden="true">
-      <section
-        class="reg-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="reg-title"
-        tabindex="-1"
-      >
-        <header class="reg-head">
-          <div>
-            <div
-              style="
-                font: 700 10px var(--f);
-                letter-spacing: 0.18em;
-                text-transform: uppercase;
-                color: #d8aa3a;
-                margin-bottom: 7px;
-              "
-            >
-              GEOSPATIALS · EARLY ACCESS
-            </div>
-            <h2 id="reg-title">Register your interest</h2>
-            <p class="reg-sub" id="reg-sub">
-              Tell us how you would like to use GEOSPATIALS.
-            </p>
-          </div>
-          <button
-            class="reg-icon"
-            id="reg-close"
-            aria-label="Close registration"
-          >
-            ✕
-          </button>
-        </header>
-        <div class="reg-body" id="reg-body"></div>
-        <footer class="reg-foot" id="reg-foot" hidden></footer>
-      </section>
-    </div>
 
     <footer>
       <div class="wrap">

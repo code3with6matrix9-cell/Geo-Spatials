@@ -598,4 +598,73 @@
             });
           });
       document.getElementById("wm").style.backgroundImage = "url('./earth.jpg')";
+
+/* ---- Testimonial pills + sliding panel (founder section) ----
+   Mirrors the reference: click a person to expand their quote, auto-rotate
+   once the section scrolls into view, pause on hover/focus. */
+(function () {
+    var b = [].slice.call(document.querySelectorAll(".vt-p")),
+        s = [].slice.call(document.querySelectorAll(".vt-s")),
+        p = document.getElementById("vt-panel"),
+        box = document.querySelector(".vt");
+    if (!box || !p || !b.length || box.dataset.ready) return;
+    box.dataset.ready = "1";
+    var cur = -1,
+        auto = false,
+        DUR = [10, 8],
+        START = 1000;
+    function up() {
+        p.classList.toggle("open", cur > -1);
+        b.forEach(function (x, k) {
+            x.classList.toggle("on", k === cur);
+            x.classList.toggle("run", auto && k === cur);
+            x.style.setProperty("--d", DUR[k] + "s");
+            x.setAttribute("aria-expanded", k === cur);
+        });
+        s.forEach(function (x, k) {
+            x.classList.toggle("on", k === cur);
+            x.setAttribute("data-side", cur > -1 && k < cur ? "l" : "r");
+            x.setAttribute("aria-hidden", k !== cur);
+        });
+    }
+    b.forEach(function (x, k) {
+        x.addEventListener("click", function () {
+            auto = false;
+            cur = cur === k ? -1 : k;
+            up();
+        });
+        x.addEventListener("animationend", function () {
+            if (auto) {
+                cur = (cur + 1) % b.length;
+                up();
+            }
+        });
+    });
+    ["pointerenter", "focusin"].forEach(function (e) {
+        box.addEventListener(e, function () {
+            box.classList.add("hold");
+        });
+    });
+    ["pointerleave", "focusout"].forEach(function (e) {
+        box.addEventListener(e, function () {
+            box.classList.remove("hold");
+        });
+    });
+    up();
+    if (!matchMedia("(prefers-reduced-motion:reduce)").matches && "IntersectionObserver" in window) {
+        var o = new IntersectionObserver(function (e) {
+            if (e[0].isIntersecting) {
+                o.disconnect();
+                setTimeout(function () {
+                    if (cur === -1) {
+                        auto = true;
+                        cur = 0;
+                        up();
+                    }
+                }, START);
+            }
+        }, { threshold: 0.35 });
+        o.observe(box);
+    }
+})();
     
