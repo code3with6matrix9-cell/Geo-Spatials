@@ -741,7 +741,7 @@
   @keyframes gs-bob{50%{transform:translateY(-6px)}}
 
   /* logo tiles */
-  .gs-contact .tile{position:relative;z-index:1;width:84px;height:84px;border-radius:23px;background:#fff;display:grid;place-items:center;box-shadow:0 16px 30px -12px rgba(5,20,45,.6);animation:gs-bob 4s ease-in-out infinite;transition:transform .4s cubic-bezier(.3,1.4,.5,1)}
+  .gs-contact .tile{position:relative;z-index:1;width:84px;height:84px;margin:0;padding:0;border-radius:23px;background:#fff;display:grid;place-items:center;place-self:center;box-shadow:0 16px 30px -12px rgba(5,20,45,.6);animation:gs-bob 4s ease-in-out infinite;transition:transform .4s cubic-bezier(.3,1.4,.5,1)}
   .gs-contact .tile img{width:50px;height:50px;object-fit:contain;display:block;transition:transform .4s cubic-bezier(.3,1.4,.5,1)}
   .gs-contact .card:hover .tile{transform:scale(1.08) rotate(-4deg)}
   .gs-contact .tile.ml img,.gs-contact .tile.wa img,.gs-contact .tile.in img{}
