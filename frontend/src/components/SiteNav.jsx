@@ -10,7 +10,7 @@ const NAV_LINKS = [
   { label: "Technologies", href: "/#tech" },
   { label: "Who can join", href: "/#who" },
   { label: "Package", href: "/#package" },
-  { label: "Academia", href: "/#academia" },
+  { label: "Academia", href: "/#institutions" },
   { label: "Contact", href: "/#contact" },
   { label: "Gallery", href: "/gallery" },
 ];
