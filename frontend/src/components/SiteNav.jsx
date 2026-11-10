@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRoute } from "../lib/router.jsx";
 import { openRegistrationModal } from "../lib/registrationTrigger.js";
-import { useSiteLogo } from "../lib/useSiteLogo.js";
 
 /** Same links, order and wording as the legacy navigation bar. */
 const NAV_LINKS = [
@@ -18,7 +17,6 @@ const NAV_LINKS = [
 export default function SiteNav({ active } = {}) {
   const { pathname } = useRoute();
   const [open, setOpen] = useState(false);
-  const logo = useSiteLogo();
 
   useEffect(() => {
     setOpen(false);
@@ -35,11 +33,7 @@ export default function SiteNav({ active } = {}) {
     <nav>
       <div className="bar glass">
         <a href="/" aria-label="GEOSPATIALS home">
-          {logo ? (
-            <img data-logo src={logo} alt="GEOSPATIALS" />
-          ) : (
-            <span className="g-wordmark">GEOSPATIALS</span>
-          )}
+          <img src="/updated_image.png" alt="GEOSPATIALS" />
         </a>
 
         <div className={`links${open ? " open" : ""}`} id="g-nav-links">

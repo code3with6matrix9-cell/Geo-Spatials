@@ -14,7 +14,8 @@
         i.src = LOGO;
       });
       document.getElementById("yr").textContent = new Date().getFullYear();
-      document.getElementById("mail").href = "mailto:" + CONFIG.email;
+      var mailEl = document.getElementById("mail");
+      if (mailEl) mailEl.href = "mailto:" + CONFIG.email;
       var TS = [
           [
             "Photogrammetry",

@@ -1830,14 +1830,14 @@ footer {
 }
 
 .hero .hlogo {
-  display: inline-block;
+  display: block;
   height: clamp(76px, 9vw, 104px);
   width: auto;
-  padding: 10px 22px;
+  padding: 0;
   margin: 0 0 20px;
-  border-radius: 22px;
-  background: rgba(255, 255, 255, .93);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, .45), 0 0 0 1px rgba(255, 255, 255, .6);
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
   filter: none
 }
 
